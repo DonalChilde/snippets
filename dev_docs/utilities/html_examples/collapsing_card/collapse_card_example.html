@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <title>Hello, world!</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="three-sub-cards" class="card">
+            <div class="card-header">
+                <button class="btn btn-sm btn-link" type="button" data-toggle="collapse"
+                    data-target="#three-sub-cards-collapse" aria-expanded="true"
+                    aria-controls="three-sub-cards-collapse">
+                    Collapsing card with 3 sub cards in a row <span class="badge badge-primary">0</span>
+                </button>
+            </div><!-- card-header -->
+
+            <div id="three-sub-cards-collapse" class="collapse">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a>card-header</a>
+                                </div><!-- card-header -->
+                                <div class="card-body">
+                                    <a>card-body</a>
+                                </div><!-- card-body -->
+                                <div class="card-footer">
+                                    <a>card-footer</a>
+                                </div><!-- card-footer -->
+                            </div><!-- card -->
+
+                        </div><!-- column -->
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a>card-header</a>
+                                </div><!-- card-header -->
+                                <div class="card-body">
+                                    <a>card-body</a>
+                                </div><!-- card-body -->
+                                <div class="card-footer">
+                                    <a>card-footer</a>
+                                </div><!-- card-footer -->
+                            </div><!-- card -->
+
+                        </div><!-- column -->
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a>card-header</a>
+                                </div><!-- card-header -->
+                                <div class="card-body">
+                                    <a>card-body</a>
+                                </div><!-- card-body -->
+                                <div class="card-footer">
+                                    <a>card-footer</a>
+                                </div><!-- card-footer -->
+                            </div><!-- card -->
+
+                        </div><!-- column -->
+                    </div><!-- row -->
+                </div><!-- card-body -->
+            </div><!-- collapse -->
+        </div><!-- card -->
+    </div><!-- container -->
+    <div class="container">
+        <div id="three-sub-cards-with-lists" class="card">
+            <div class="card-header">
+                <button class="btn btn-sm btn-link" type="button" data-toggle="collapse"
+                    data-target="#three-sub-cards-with-lists-collapse" aria-expanded="true"
+                    aria-controls="three-sub-cards-with-lists-collapse">
+                    Collapsing card with 3 sub cards (containing sortable lists) in a row <span
+                        class="badge badge-primary">0</span>
+                </button>
+            </div><!-- card-header -->
+
+            <div id="three-sub-cards-with-lists-collapse" class="collapse">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a>List with drag handles</a>
+                                </div><!-- card-header -->
+                                <div class="card-body">
+                                    <div id="draggable-1" class="list-group">
+                                        <div class="list-group-item">
+                                            <span class="fas fa-arrows-alt" aria-hidden="true"></span>
+                                            <a>list item 1</a>
+                                        </div><!-- list-group-item -->
+                                        <div class="list-group-item">
+                                            <span class="fas fa-arrows-alt" aria-hidden="true"></span>
+                                            <a>list item 2</a>
+                                        </div><!-- list-group-item -->
+                                    </div><!-- list-group -->
+                                </div><!-- card-body -->
+                                <div class="card-footer">
+                                    <a>card-footer</a>
+                                </div><!-- card-footer -->
+                            </div><!-- card -->
+
+                        </div><!-- column -->
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a>Lists with collapsible sub lists</a>
+                                </div><!-- card-header -->
+                                <div class="card-body">
+                                    <div id="group-parent" class="list-group">
+                                        <div class="list-group-item list-group-item-toggle">
+                                            <a href="#group-1" class="list-group-item list-group-item-action"
+                                                data-toggle="collapse">
+                                                <span class="fa fa-caret-down"></span>Group 1</a>
+                                            <div id="group-1" class="list-group collapse show">
+
+                                                <div class="list-group-item">
+                                                    <span class="fas fa-arrows-alt" aria-hidden="true"></span>
+                                                    <a>Item 1-1</a>
+                                                </div><!-- list-group-item -->
+                                                <div class="list-group-item">
+                                                    <span class="fas fa-arrows-alt" aria-hidden="true"></span>
+                                                    <a>Item 1-2</a>
+                                                </div><!-- list-group-item -->
+
+                                            </div><!-- list-group -->
+                                        </div><!-- list-group-item -->
+                                        <div class="list-group-item">
+                                            <a href="#group-2" class="list-group-item list-group-item-action"
+                                                data-toggle="collapse">
+                                                <span class="fa fa-caret-down"></span>Group 2</a>
+                                            <div id="group-2" class="list-group collapse show">
+
+                                                <div class="list-group-item">
+                                                    <span class="fas fa-arrows-alt" aria-hidden="true"></span>
+                                                    <a>Item 2-1</a>
+                                                </div><!-- list-group-item -->
+                                                <div class="list-group-item">
+                                                    <span class="fas fa-arrows-alt" aria-hidden="true"></span>
+                                                    <a>Item 2-2</a>
+                                                </div><!-- list-group-item -->
+
+                                            </div><!-- list-group -->
+                                        </div><!-- list-group-item -->
+                                    </div><!-- list-group -->
+                                </div><!-- card-body -->
+                                <div class="card-footer">
+                                    <a>card-footer</a>
+                                </div><!-- card-footer -->
+                            </div><!-- card -->
+
+                        </div><!-- column -->
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a>Create new lists with sub lists</a>
+                                </div><!-- card-header -->
+                                <div class="card-body">
+                                    <div id="group-parent-2" class="list-group">
+                                    </div><!-- list-group -->
+                                </div><!-- card-body -->
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <input id="group-name-input" type="text"><button id="add-group-button"
+                                            class="btn btn-sm">
+                                            Add List
+                                        </button>
+                                    </div>
+                                </div><!-- card-footer -->
+                            </div><!-- card -->
+
+                        </div><!-- column -->
+                    </div><!-- row -->
+                </div><!-- card-body -->
+            </div><!-- collapse -->
+        </div><!-- card -->
+    </div><!-- container -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- Choose the jquery version -->
+
+    <!--
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
+    -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script type='application/javascript' src="../collapsing_card/scripts/collapse_card_example_script.js"></script>
+
+</body>

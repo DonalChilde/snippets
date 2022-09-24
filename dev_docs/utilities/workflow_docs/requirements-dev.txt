@@ -1,0 +1,10 @@
+# Dev environment packages
+pylint
+#pytest==4.0.2
+pytest
+autopep8
+rope
+mypy
+sphinx
+black
+check-manifest
