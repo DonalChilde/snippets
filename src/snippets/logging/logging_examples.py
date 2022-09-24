@@ -4,6 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 LOGGER = logging.getLogger(__name__)
 
+# FIXME move this info to a dev-doc
 
 # NOTE library logging
 # Use this in libraries to allow parent app control over logging
