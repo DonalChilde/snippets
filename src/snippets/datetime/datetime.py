@@ -2,10 +2,11 @@ import logging
 from datetime import date, datetime, timedelta
 from typing import Sequence
 
-from dateutil import tz
-
 from ..collection.search import distance_in_list
 from ..filter.filter import simple_filter
+
+# from dateutil import tz
+
 
 #### setting up logger ####
 logger = logging.getLogger(__name__)
@@ -101,12 +102,12 @@ def end_of_week(date_: date, week_starts_on: int = 7, iso: bool = True) -> date:
 #     return datetime.now(tz).date().isoformat()
 
 
-def tz_aware_utcnow() -> datetime:
-    """
-    Enforce adding timezone to utcnow. Use this over utcnow.
+# def tz_aware_utcnow() -> datetime:
+#     """
+#     Enforce adding timezone to utcnow. Use this over utcnow.
 
-    https://docs.python.org/3/library/datetime.html#datetime.datetime.now
+#     https://docs.python.org/3/library/datetime.html#datetime.datetime.now
 
-    :return: A datetime representing a timezone aware :func:`datetime.utcnow`
-    """
-    return datetime.now(tz.UTC)  # type: ignore
+#     :return: A datetime representing a timezone aware :func:`datetime.utcnow`
+#     """
+#     return datetime.now(tz.UTC)  # type: ignore

@@ -2,14 +2,13 @@ import logging
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 
-import dateutil
+# import dateutil
 import pytest
 
-from snippets.datetime.datetime import (
+from snippets.datetime.datetime import (  # tz_aware_utcnow,
     beginning_of_week,
     end_of_week,
     range_of_dates,
-    tz_aware_utcnow,
 )
 
 
@@ -191,10 +190,10 @@ def test_end_of_week(caplog):
             )
 
 
-def test_tz_aware_utcnow(caplog):
-    caplog.set_level(logging.DEBUG)
-    result = tz_aware_utcnow()
-    logging.debug(
-        "UTC now with time zone: %s, without time zone: %s", result, datetime.utcnow()
-    )
-    assert result.tzinfo == dateutil.tz.UTC
+# def test_tz_aware_utcnow(caplog):
+#     caplog.set_level(logging.DEBUG)
+#     result = tz_aware_utcnow()
+#     logging.debug(
+#         "UTC now with time zone: %s, without time zone: %s", result, datetime.utcnow()
+#     )
+#     assert result.tzinfo == dateutil.tz.UTC
