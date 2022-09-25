@@ -7,7 +7,8 @@ import string
 from pathlib import Path
 
 import pytest
-from pfmsoft.util.file_hash import file_hash
+
+from snippets.file_hash import file_hash
 
 
 @pytest.fixture(scope="function")
