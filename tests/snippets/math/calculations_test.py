@@ -1,7 +1,8 @@
 import logging
 
 import pytest
-from pfmsoft.util.math import calculations
+
+from snippets.math import calculations
 
 #### setting up logger ####
 logger = logging.getLogger(__name__)

@@ -2,8 +2,8 @@ import logging
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
-from pfmsoft.util.collection.search import distance_in_list
-from pfmsoft.util.filter.filter import simple_filter
+from snippets.collection.search import distance_in_list
+from snippets.filter.filter import simple_filter
 
 #### setting up logger ####
 logger = logging.getLogger(__name__)

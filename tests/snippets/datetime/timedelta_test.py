@@ -1,7 +1,8 @@
 from datetime import timedelta
 
 import pytest
-from pfmsoft.util.datetime.timedelta import (
+
+from snippets.datetime.timedelta import (
     HHHMMSS_to_seconds_int,
     parse_HHMMSS,
     split_timedelta,

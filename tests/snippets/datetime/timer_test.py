@@ -3,7 +3,7 @@ from collections import OrderedDict, namedtuple
 from dataclasses import dataclass
 
 # from utility_lib.datetime_utilities.timer import Timer, simple_timer
-from pfmsoft.util.datetime.timer import Timer, context_timer
+from snippets.timers.timer import Timer, context_timer
 
 NTTEST = namedtuple("NTTEST", ["val1", "val2", "val3"])
 

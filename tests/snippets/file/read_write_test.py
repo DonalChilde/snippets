@@ -2,7 +2,8 @@ import json
 from pathlib import Path
 
 import pytest
-from pfmsoft.util.file.read_write import (
+
+from snippets.file.read_write import (
     load_json,
     save_json,
     save_lines,

@@ -4,7 +4,8 @@ from datetime import date, datetime, timedelta
 
 import dateutil
 import pytest
-from pfmsoft.util.datetime.datetime import (
+
+from snippets.datetime.datetime import (
     beginning_of_week,
     end_of_week,
     range_of_dates,
