@@ -2,6 +2,8 @@
 Created on Oct 30, 2017
 
 @author: croaker
+
+NOTE not sure this is worth the time saved, look for premade solution? 2022-09
 """
 import pprint
 
