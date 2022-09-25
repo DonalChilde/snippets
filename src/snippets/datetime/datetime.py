@@ -3,8 +3,9 @@ from datetime import date, datetime, timedelta
 from typing import Sequence
 
 from dateutil import tz
-from pfmsoft.util.collection.search import distance_in_list
-from pfmsoft.util.filter.filter import simple_filter
+
+from ..collection.search import distance_in_list
+from ..filter.filter import simple_filter
 
 #### setting up logger ####
 logger = logging.getLogger(__name__)
