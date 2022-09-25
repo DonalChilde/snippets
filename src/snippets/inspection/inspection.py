@@ -1,5 +1,7 @@
 def fullname(o):
     """
+    Get the fully qualified class name of an object.
+    https://stackoverflow.com/questions/2020014/get-fully-qualified-class-name-of-an-object-in-python/70693158#70693158
     https://stackoverflow.com/a/70693158/105844
     _summary_
 
