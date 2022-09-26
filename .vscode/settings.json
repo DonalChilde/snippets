@@ -1,10 +1,6 @@
 {
   "python.defaultInterpreterPath": ".venv/bin/python",
   "python.linting.pylintEnabled": true,
-  // "python.linting.pylintArgs": [
-  //   "--load-plugins",
-  //   "pylint_flask_sqlalchemy, pylint_flask"
-  // ],
   "python.formatting.provider": "black",
   "editor.formatOnSave": true,
   "python.autoComplete.extraPaths": ["./src"],
@@ -20,5 +16,8 @@
   "liveServer.settings.port": 5501,
   "esbonio.server.enabled": true,
   "esbonio.sphinx.confDir": "${workspaceFolder}/docs/source",
-  "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build"
+  "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/build",
+  "editor.quickSuggestions": {
+    "comments": "on"
+  }
 }
