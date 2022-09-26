@@ -6,6 +6,7 @@ from typing import (
     Iterable,
     List,
     NamedTuple,
+    Optional,
     Sequence,
     Tuple,
     Union,
@@ -130,3 +131,28 @@ def index_list_of_objects_multiple(
         indexed_field.append(item)
         result[key_field_value] = indexed_field
     return result
+
+
+def combine_dictionaries(
+    base_dict: dict, additional_dicts: Optional[Sequence[Dict]]
+) -> Dict:
+    """
+    Not sure if this is the simplest way to do this, investigate.
+
+    _extended_summary_
+
+    Args:
+        base_dict: _description_
+        additional_dicts: _description_
+
+    Returns:
+        _description_
+    """
+    # TODO move this to collection util - NB makes a new dict with
+    # optional additional dicts, each overwriting the previous keys
+    combined_dict: Dict = {}
+    combined_dict.update(base_dict)
+    if additional_dicts is not None:
+        for override in additional_dicts:
+            combined_dict.update(override)
+    return combined_dict
