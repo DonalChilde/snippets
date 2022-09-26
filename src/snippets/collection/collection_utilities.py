@@ -6,7 +6,6 @@ from typing import (
     Iterable,
     List,
     NamedTuple,
-    Optional,
     Sequence,
     Tuple,
     Union,
@@ -64,7 +63,6 @@ def sort_to_new_list(
 def index_list_of_dicts(
     data: Sequence[Dict[str, Any]], key_field: str
 ) -> Dict[str, Dict[str, Any]]:
-    # TODO save to utilities
     result = {}
     for item in data:
         key_field_value = item[key_field]  # will error if field not found
@@ -100,7 +98,7 @@ def index_list_of_objects(
         [description]
     """
     if use_get_item:
-        indexer = itemgetter(key_field)
+        indexer: itemgetter | attrgetter = itemgetter(key_field)
     else:
         indexer = attrgetter(key_field)
     result = {}
@@ -119,7 +117,7 @@ def index_list_of_objects_multiple(
     cast_index: Callable = None,
 ) -> Dict[Any, List[Any]]:
     if use_get_item:
-        indexer = itemgetter(key_field)
+        indexer: itemgetter | attrgetter = itemgetter(key_field)
     else:
         indexer = attrgetter(key_field)
     result: Dict[Any, List[Any]] = {}
@@ -133,26 +131,22 @@ def index_list_of_objects_multiple(
     return result
 
 
-def combine_dictionaries(
-    base_dict: dict, additional_dicts: Optional[Sequence[Dict]]
-) -> Dict:
+def combine_dictionaries(dicts: Sequence[Dict]) -> Dict:
     """
-    Not sure if this is the simplest way to do this, investigate.
+    Convenience function to combine a Sequence of dictionaries.
 
-    _extended_summary_
+    Duplicate keys will be overwritten by later values. passed in dicts
+    will not be modified, returns a new dict with the combined values
 
     Args:
-        base_dict: _description_
-        additional_dicts: _description_
+        dicts: A sequence of dicts to be combined
 
     Returns:
-        _description_
+        A new dict with the combined values
     """
-    # TODO move this to collection util - NB makes a new dict with
-    # optional additional dicts, each overwriting the previous keys
+
     combined_dict: Dict = {}
-    combined_dict.update(base_dict)
-    if additional_dicts is not None:
-        for override in additional_dicts:
-            combined_dict.update(override)
+    if dicts is not None:
+        for item in dicts:
+            combined_dict.update(item)
     return combined_dict
