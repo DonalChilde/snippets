@@ -13,4 +13,6 @@ tests for ReadableDirectory
 """
 from snippets.argparse.readable_directory import ReadableDirectory
 
-# TODO write tests
+
+def test_write_the_tests():
+    assert False, "Write The Tests!"

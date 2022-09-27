@@ -13,4 +13,6 @@
 
 from snippets.argparse.help_on_error import ArgumentParserHelpOnError
 
-# TODO Write Tests
+
+def test_write_the_tests():
+    assert False, "Write The Tests!"
