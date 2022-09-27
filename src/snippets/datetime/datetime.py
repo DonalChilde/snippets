@@ -2,7 +2,7 @@ import logging
 from datetime import date, datetime, timedelta
 from typing import Sequence
 
-from ..collection.search import distance_in_list
+from ..collection.distance_in_list import distance_in_list
 from ..filter.filter import simple_filter
 
 # from dateutil import tz
