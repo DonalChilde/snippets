@@ -1,10 +1,24 @@
+# pylint: disable=missing-docstring, empty-docstring
+####################################################
+#                                                  #
+# tests/snippets/collection/wrap_range_test.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-09-27T11:06:40-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
+
+"""
+
+"""
+
 import logging
-from dataclasses import dataclass
-from typing import Dict, List, Optional
 
 import pytest
 
-from snippets.collection.misc import wrap_range
+from snippets.collection.wrap_range import wrap_range
 
 #### setting up logger ####
 logger = logging.getLogger(__name__)
@@ -12,7 +26,7 @@ logger.addHandler(logging.NullHandler())
 
 
 def test_wrap_range(caplog):
-    # caplog.set_level(logging.DEBUG)
+    caplog.set_level(logging.DEBUG)
     range_gen = wrap_range(0, 10, 6, 1)
     as_list = list(range_gen)
     expected = [6, 7, 8, 9, 0, 1, 2, 3, 4, 5]

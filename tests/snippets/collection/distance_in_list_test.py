@@ -2,7 +2,7 @@ import logging
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
-from snippets.collection.search import distance_in_list
+from snippets.collection.distance_in_list import distance_in_list
 from snippets.filter.filter import simple_filter
 
 #### setting up logger ####

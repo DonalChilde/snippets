@@ -1,3 +1,19 @@
+# pylint: disable=missing-docstring, empty-docstring
+####################################################
+#                                                  #
+# tests/snippets/collection/optional_object_test.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-09-27T11:04:15-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
+
+"""
+
+"""
+
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
