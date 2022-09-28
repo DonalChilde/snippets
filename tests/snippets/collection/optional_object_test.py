@@ -26,30 +26,45 @@ class SomeData:
     data_2: str
 
 
-def test_optional_object():
-    class MyClass:
-        def __init__(
-            self,
-            arg1: int,
-            arg2: Optional[List[str]] = None,
-            arg3: Optional[Dict[str, int]] = None,
-            arg4: Optional[SomeData] = None,
-        ):
-            default_somedata = {"data_1": 1, "data_2": "two"}
-            self.arg1 = arg1
-            self.arg2: List[str] = optional_object(arg2, list, ["a", "b", "c"])
-            self.arg3: Dict[str, int] = optional_object(arg3, dict)
-            self.arg4: SomeData = optional_object(arg4, SomeData, **default_somedata)
+class TestClass:
+    def __init__(
+        self,
+        int_field: int,
+        list_field: Optional[List[str]] = None,
+        dict_field: Optional[Dict[str, int]] = None,
+        obj_field: Optional[SomeData] = None,
+    ):
+        default_somedata = {"data_1": 1, "data_2": "two"}
+        self.int_field = int_field
+        self.list_field: List[str] = optional_object(list_field, list, ["a", "b", "c"])
+        self.dict_field: Dict[str, int] = optional_object(dict_field, dict)
+        self.obj_field: SomeData = optional_object(
+            obj_field, SomeData, **default_somedata
+        )
 
-    test_1 = MyClass(5)
-    assert isinstance(test_1.arg2, list)
-    assert isinstance(test_1.arg3, dict)
-    assert isinstance(test_1.arg4, SomeData)
-    assert test_1.arg4.data_1 == 1
-    assert test_1.arg2[0] == "a"
 
-    test_2 = MyClass(2, [1, 2, 3], arg4=SomeData(2, "three"))
-    assert isinstance(test_2.arg2, list)
-    assert isinstance(test_2.arg4, SomeData)
-    assert test_2.arg2[0] == 1
-    assert test_2.arg4.data_1 == 2
+def test_default_values():
+
+    test_1 = TestClass(5)
+    test_2 = TestClass(5)
+    assert isinstance(test_1.list_field, list)
+    assert isinstance(test_1.dict_field, dict)
+    assert isinstance(test_1.obj_field, SomeData)
+    assert test_1.obj_field == SomeData(data_1=1, data_2="two")
+    assert test_1.list_field == ["a", "b", "c"]
+    assert test_1.dict_field is not test_2.dict_field
+
+
+def test_passed_in_mutables():
+    muta_list = [1, 2, 3]
+    muta_dict = {"a": 1, "b": 2}
+    muta_obj = SomeData(2, "three")
+
+    test_2 = TestClass(
+        2, list_field=muta_list, dict_field=muta_dict, obj_field=muta_obj
+    )
+    assert isinstance(test_2.list_field, list)
+    assert isinstance(test_2.obj_field, SomeData)
+    assert test_2.list_field is muta_list
+    assert test_2.obj_field is muta_obj
+    assert test_2.dict_field is muta_dict

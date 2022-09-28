@@ -8,33 +8,21 @@
 # Last Modified: _iso_date_         #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
-from typing import Any, Callable, Dict, Iterable, List, TypeVar, Union
+from typing import Any, Callable, Dict, Iterable, List, Optional, TypeVar
 
 T = TypeVar("T")
 
 
-def cast_str(item: Any) -> str:
-    """
-    A callable to cast an object to string.
-
-    [extended_summary]
-
-    :param item: Object to cast to string.
-    :return: String version of item.
-    """
-    return str(item)
-
-
 def iterable_to_dict(
     data: Iterable[T],
-    key_getter: Callable,
-    cast_key: Callable = cast_str,
-) -> Dict[Any, Union[T, List[T]]]:
+    key_getter: Callable[[T], Any],
+    cast_key: Optional[Callable] = str,
+) -> Dict[Any, T]:
     """
     Convert an iterable to a dict, using keys from the iterable values.
 
     itemgetter and attrgetter can be used for key_getter.
-    dict comprehensions can duplicate much of this.
+    dict comprehensions can also do this.
 
     Example:
         key_getter = itemgetter(1)
@@ -42,20 +30,21 @@ def iterable_to_dict(
         new_dict = iterable_to_dict(data,key_getter)
         print(new_dict)
         # new_dict = {"3":[2,3], "4":[3,4],"5":[5,6]}
-        # dict comprehension
-        comp_dict = {str(key_getter(x)):x for x in data}
+        # dict comprehension method
+        key_getter = itemgetter(1)
+        new_dict = {str(key_getter(x)):x for x in data}
 
     Args:
         data: The iterable.
         key_getter: A function which, when called, returns the value
             to be used as the dict key.
         cast_key: Function called on the prospective key to ensure it can be used as
-            a dict key. Defaults to cast_str.
+            a dict key. Defaults to str.
 
     Returns:
         The dict of the iterable.
     """
-    result: Dict[Any, Union[T, List[T]]] = {}
+    result: Dict[Any, T] = {}
     for item in data:
         key_field_value = key_getter(item)
         if cast_key is not None:
@@ -67,32 +56,29 @@ def iterable_to_dict(
 def iterable_to_dict_of_lists(
     data: Iterable[T],
     key_getter: Callable,
-    cast_key: Callable = cast_str,
+    cast_key: Optional[Callable] = str,
 ) -> Dict[Any, List[T]]:
     """
     Convert an iterable to a dict, using keys from the iterable values.
 
-    Coerces values into a list, key:List[T]
+    Appends values to a list, key:List[T]
     itemgetter and attrgetter can be used for key_getter.
     dict comprehensions can duplicate much of this, but not
     preserving multiple values, afaik
 
-    TODO make multiple example
     Example:
         key_getter = itemgetter(1)
-        data = [[2,3],[3,4],[5,6]]
-        new_dict = iterable_to_dict(data,key_getter)
+        data = [[2,3],[3,4],[5,6],[5,6]]
+        new_dict = iterable_to_dict_of_lists(data,key_getter)
         print(new_dict)
-        # new_dict = {"3":[2,3], "4":[3,4],"5":[5,6]}
-        # dict comprehension
-        comp_dict = {str(key_getter(x)):x for x in data}
+        # new_dict = {"3":[[2,3]], "4":[[3,4]],"5":[[5,6],[5,6]]}
 
     Args:
         data: The iterable.
         key_getter: A function which, when called, returns the value
             to be used as the dict key.
         cast_key: Function called on the prospective key to ensure it can be used as
-            a dict key. Defaults to cast_str.
+            a dict key. Defaults to str.
 
     Returns:
         The dict of the iterable.
@@ -103,7 +89,7 @@ def iterable_to_dict_of_lists(
         key_field_value = key_getter(item)
         if cast_key is not None:
             key_field_value = cast_key(key_field_value)
-        # force all values to be contained by a list
+        # force all values to be contained in a list
         indexed_field: List = result.get(key_field_value, [])
         indexed_field.append(item)
         result[key_field_value] = indexed_field

@@ -26,7 +26,7 @@ logger.addHandler(logging.NullHandler())
 
 
 def wrap_range(
-    left_boundry: int, right_boundry: int, start_index: int, direction: int
+    left_boundry: int, right_boundry: int, start_value: int, direction: int
 ) -> Iterator[int]:
     """Create a range of integer values that start somewhere between the beginning and end, wrapping around back to start.
 
@@ -42,7 +42,7 @@ def wrap_range(
     Args:
         left_boundry: lower boundry of number line
         right_boundry: upper boundry of number line + 1
-        start_index: starting value, must be  left_bound >= start_index < right_bound
+        start_value: starting value, must be  left_bound <= start_value < right_bound
         direction: a positive or negative integer, where positive integers increment
         to the right on the number line, and negative integers increment to the left.
 
@@ -55,10 +55,10 @@ def wrap_range(
 
     """
     logger.debug(
-        "wrap_range(left_boundry=%s, right_bound=%s, start_index=%s, direction=%s)",
+        "wrap_range(left_boundry=%s, right_bound=%s, start_value=%s, direction=%s)",
         left_boundry,
         right_boundry,
-        start_index,
+        start_value,
         direction,
     )
     if direction == 0:
@@ -69,11 +69,11 @@ def wrap_range(
         )
     range_generator = None
     if direction > 0:
-        left_range = range(left_boundry, start_index)
-        right_range = range(start_index, right_boundry)
+        left_range = range(left_boundry, start_value)
+        right_range = range(start_value, right_boundry)
         range_generator = chain(right_range, left_range)
     else:
-        left_range = range(start_index, left_boundry - 1, -1)
-        right_range = range(right_boundry - 1, start_index, -1)
+        left_range = range(start_value, left_boundry - 1, -1)
+        right_range = range(right_boundry - 1, start_value, -1)
         range_generator = chain(left_range, right_range)
     return range_generator

@@ -2,7 +2,7 @@ import logging
 from datetime import date, datetime, timedelta
 from typing import Sequence
 
-from ..collection.distance_in_list import distance_in_list
+from ..collection.distance_in_wrapped_list import distance_in_wrapped_list
 from ..filter.filter import simple_filter
 
 # from dateutil import tz
@@ -64,7 +64,7 @@ def beginning_of_week(date_: date, week_starts_on: int = 7, iso: bool = True) ->
         dow_int = [0, 1, 2, 3, 4, 5, 6]
     if week_starts_on not in dow_int:
         raise ValueError(f"week_starts_on of {week_starts_on} is not valid. iso={iso}")
-    distance, _ = distance_in_list(
+    distance, _ = distance_in_wrapped_list(
         dow_int, dow_index, -1, simple_filter(week_starts_on)
     )
     new_date = date_ - timedelta(hours=24 * distance)  # type: ignore

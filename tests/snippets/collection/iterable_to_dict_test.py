@@ -1,7 +1,21 @@
-import logging
+# pylint: disable=missing-docstring, empty-docstring
+####################################################
+#                                                  #
+# tests/snippets/collection/iterable_to_dict_test.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-09-28T10:52:22-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
 from dataclasses import dataclass
+from operator import attrgetter, itemgetter
 
-from snippets.collection.iterable_to_dict import iterable_to_dict
+from snippets.collection.iterable_to_dict import (
+    iterable_to_dict,
+    iterable_to_dict_of_lists,
+)
 
 
 @dataclass
@@ -10,39 +24,78 @@ class SomeData:
     data_2: str
 
 
-def test_index_objects(caplog):
-    caplog.set_level(logging.DEBUG)
-    data_1 = [[1, 2, 3], ["a", "b", "c"], [4, 5, 6]]
-    data_2 = [
+def test_iterable_to_dict_list_data():
+    list_data = [[1, 2, 3], ["a", "b", "c"], [4, 5, 6]]
+    expected_result = {"1": [1, 2, 3], "a": ["a", "b", "c"], "4": [4, 5, 6]}
+    key_getter = itemgetter(0)
+    result = iterable_to_dict(data=list_data, key_getter=key_getter)
+    assert result == expected_result
+
+
+def test_iterable_to_dict_dict_data():
+    dict_data = [
         {"arg1": 1, "arg2": 2, "arg3": 3},
         {"arg1": "a", "arg2": "b", "arg3": "c"},
         {"arg1": 4, "arg2": 5, "arg3": 6},
     ]
-    obj_1 = SomeData(1, "a")
-    obj_2 = SomeData(2, "b")
-    obj_3 = SomeData(3, "c")
-    obj_4 = SomeData(4, "b")
-    data_3 = [obj_1, obj_2, obj_3, obj_4]
+    expected_result = {
+        "2": {"arg1": 1, "arg2": 2, "arg3": 3},
+        "b": {"arg1": "a", "arg2": "b", "arg3": "c"},
+        "5": {"arg1": 4, "arg2": 5, "arg3": 6},
+    }
+    key_getter = itemgetter("arg2")
+    result = iterable_to_dict(data=dict_data, key_getter=key_getter)
+    assert result == expected_result
 
-    result_1 = iterable_to_dict(data_1, 2)
-    assert result_1["c"] == ["a", "b", "c"]
-    assert result_1["3"] == [1, 2, 3]
 
-    result_2 = iterable_to_dict(data_2, "arg2")
-    assert result_2["2"] == {"arg1": 1, "arg2": 2, "arg3": 3}
+def test_iterable_to_dict_obj_data():
+    obj_data = [SomeData(1, "a"), SomeData(2, "b"), SomeData(3, "c")]
+    expected_result = {
+        "1": SomeData(1, "a"),
+        "2": SomeData(2, "b"),
+        "3": SomeData(3, "c"),
+    }
+    key_getter = attrgetter("data_1")
+    result = iterable_to_dict(data=obj_data, key_getter=key_getter)
+    assert result == expected_result
 
-    result_3 = iterable_to_dict(data_3, "data_2", use_itemgetter=False)
-    assert result_3["a"] == SomeData(1, "a")
-    assert len(result_3) == 3
 
-    result_4 = iterable_to_dict(
-        data_3, "data_2", use_itemgetter=False, preserve_multiple=True
-    )
-    logging.debug("result_4: %s", result_4)
-    assert result_4["a"] == [SomeData(1, "a")]
-    assert result_4["b"] == [SomeData(2, "b"), SomeData(4, "b")]
-    assert len(result_4) == 3
+def test_iterable_to_dict_of_lists_list_data():
+    list_data = [[1, 2, 3], ["a", "b", "c"], [4, 5, 6], [4, 5, 6]]
+    expected_result = {
+        "1": [[1, 2, 3]],
+        "a": [["a", "b", "c"]],
+        "4": [[4, 5, 6], [4, 5, 6]],
+    }
+    key_getter = itemgetter(0)
+    result = iterable_to_dict_of_lists(data=list_data, key_getter=key_getter)
+    assert result == expected_result
 
-    result_5 = iterable_to_dict(data_1, 2, cast_index=None)
-    assert result_5[3] == [1, 2, 3]
-    assert result_5["c"] == ["a", "b", "c"]
+
+def test_iterable_to_dict_of_lists_dict_data():
+    dict_data = [
+        {"arg1": 1, "arg2": 2, "arg3": 3},
+        {"arg1": "a", "arg2": "b", "arg3": "c"},
+        {"arg1": 4, "arg2": 5, "arg3": 6},
+        {"arg1": 4, "arg2": 5, "arg3": 6},
+    ]
+    expected_result = {
+        "2": [{"arg1": 1, "arg2": 2, "arg3": 3}],
+        "b": [{"arg1": "a", "arg2": "b", "arg3": "c"}],
+        "5": [{"arg1": 4, "arg2": 5, "arg3": 6}, {"arg1": 4, "arg2": 5, "arg3": 6}],
+    }
+    key_getter = itemgetter("arg2")
+    result = iterable_to_dict_of_lists(data=dict_data, key_getter=key_getter)
+    assert result == expected_result
+
+
+def test_iterable_to_dict_of_lists_obj_data():
+    obj_data = [SomeData(1, "a"), SomeData(2, "b"), SomeData(3, "c"), SomeData(3, "c")]
+    expected_result = {
+        "1": [SomeData(1, "a")],
+        "2": [SomeData(2, "b")],
+        "3": [SomeData(3, "c"), SomeData(3, "c")],
+    }
+    key_getter = attrgetter("data_1")
+    result = iterable_to_dict_of_lists(data=obj_data, key_getter=key_getter)
+    assert result == expected_result

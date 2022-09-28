@@ -98,7 +98,7 @@ def sort_in_place(
     """
     if not hasattr(sortable_collection, "sort"):
         raise AttributeError(
-            "Data must be a mutable type with a sort function, e.g. List"
+            "sortable_collection must be a mutable type with a sort function, e.g. List"
         )
     for instruction in reversed(instructions):
         sortable_collection.sort(

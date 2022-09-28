@@ -13,7 +13,7 @@
 
 from typing import Callable, TypeVar, Union
 
-T = TypeVar("T")  # pylint: disable=invalid-name
+T = TypeVar("T")
 
 
 def optional_object(
