@@ -29,3 +29,9 @@ The {py:class}`list` class {py:meth}`sort <list.sort>` method.
 - `:py:meth:`: modules, e.g. {py:meth}`list.sort`
 - `:py:attr:`: modules, e.g. {py:attr}`re.Pattern.groups`
 - `:py:data:`: modules, e.g. {py:data}`datetime.MINYEAR`
+
+## Linting
+
+### pylint
+
+`# pylint: disable=missing-docstring, empty-docstring`

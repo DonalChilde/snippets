@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-
+# TODO read this article, https://realpython.com/python-filter-function/
 class ContentFilter(object):
     """Accepts a single filter or a collection of filters"""
 
