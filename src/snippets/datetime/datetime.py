@@ -1,5 +1,5 @@
 import logging
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from typing import Sequence
 
 from ..collection.distance_in_wrapped_list import distance_in_wrapped_list
