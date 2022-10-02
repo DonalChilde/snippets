@@ -46,6 +46,8 @@ then can output from timedelta to various formats.
 from dataclasses import dataclass
 from datetime import timedelta
 from decimal import Decimal
+from typing import TypedDict
+
 
 # class Duration:
 #     def __init__(
@@ -58,6 +60,44 @@ from decimal import Decimal
 #         # make immutable
 #         # constructors from common sources, ie nanoseconds, timedelta
 #         # output to string, iso
+class DurationDict(TypedDict):
+    years: int
+    days: int
+    hours: int
+    minutes: int
+    seconds: int
+    fractional_seconds: int
+    exponent: int
+
+
+def factor_timedelta(delta: timedelta) -> DurationDict:
+    """
+    Split a time delta to a dict of years, days, hours, minutes, seconds, microseconds.
+
+    https://stackoverflow.com/a/17847006/105844
+
+    Args:
+        delta: The timedelta to split
+    Returns:
+        A dict of the times in the timedelta
+    """
+    abs_delta = abs(delta)
+    years, rem = divmod(abs_delta, timedelta(days=365))
+    days, rem = divmod(rem, timedelta(days=1))
+    hours, rem = divmod(rem, timedelta(hours=1))
+    minutes, rem = divmod(rem, timedelta(minutes=1))
+    seconds = int(rem.total_seconds())
+    fractional_seconds = rem.microseconds
+    exponent = -6
+    return DurationDict(
+        years=years,
+        days=days,
+        hours=hours,
+        minutes=minutes,
+        seconds=seconds,
+        fractional_seconds=fractional_seconds,
+        exponent=exponent,
+    )
 
 
 @dataclass(frozen=True)
@@ -65,10 +105,15 @@ class Duration:
     """
     Hold a length of time.
 
-    SIMPLE IS BETTER
+    SIMPLE IS BETTER!!!!
+    Ah, crap. Im part way to a timedelta replacement with arbitrary precision.
+    internally, could store as years, days, seconds, fractional seconds.
+    Change to regular class, to make it more clear what I'm doing?
+    Do testing on Deciaml to see actual precision, int and fractional values.
 
     TODO immutable, iso format in/out
-    TODO support math, comparison, hash
+    TODO support math
+    TODO interaction of precision, how and when to define.
     """
 
     years: int = 0
@@ -76,6 +121,7 @@ class Duration:
     hours: int = 0
     minutes: int = 0
     seconds: Decimal = Decimal(0)
+    precision: int = 9
 
     def __post_init__(self):
         self._check_overflow()
@@ -83,6 +129,7 @@ class Duration:
     def _check_overflow(self):
         # TODO check for overflow of fields, eg. days=400
         # start at the bottom and get bigger.
+        # handle precision
         pass
 
     def to_seconds(self) -> Decimal:
@@ -103,6 +150,33 @@ class Duration:
         return result
 
     def to_iso_format(self) -> str:
+        """
+        Get an iso string of the Duration.
+        https://en.wikipedia.org/wiki/ISO_8601#Durations
+        """
+        iso_string = (
+            f"P{self.years}Y{self.days}DT{self.hours}H{self.minutes}M{self.seconds}S"
+        )
+        return iso_string
+
+    @classmethod
+    def from_iso(cls, iso_string: str) -> "Duration":
+        """
+        Make a Duration from an iso string.
+
+        ISO Duration strings are ambiguous. This function assumes 365 days in a year,
+        30 days in a month, 7 days in a week, 24 hours in a day, 60 minutes an hour,
+        and 60 seconds in a minute. To allow greatest precision for fractional values,
+        all fields will be converted to seconds before the fraction is applied.
+        For example, 1 day = 86400 seconds. P.34D would be calulated as
+        86400 * .34 = 29376 seconds. Duration(seconds = 29376)
+
+        Args:
+            iso_string: _description_
+
+        Returns:
+            _description_
+        """
         raise NotImplementedError
 
     @classmethod
@@ -118,20 +192,18 @@ class Duration:
 
     @classmethod
     def from_timedelta(cls, delta: timedelta) -> "Duration":
-        abs_delta = abs(delta)
-        years, rem = divmod(abs_delta, timedelta(days=365))
-        days, rem = divmod(rem, timedelta(days=1))
-        hours, rem = divmod(rem, timedelta(hours=1))
-        minutes, rem = divmod(rem, timedelta(minutes=1))
-        seconds = Decimal(rem.total_seconds())
-
+        split = factor_timedelta(delta=delta)
         return cls(
-            years=years,
-            days=days,
-            hours=hours,
-            minutes=minutes,
-            seconds=seconds,
+            years=split["years"],
+            days=split["days"],
+            hours=split["hours"],
+            minutes=split["minutes"],
+            seconds=split["seconds"],
         )
+
+    @classmethod
+    def from_duration_dict(cls, duration_dict: DurationDict) -> "Duration":
+        raise NotImplementedError
 
 
 def duration_to_HHMMSS(
@@ -150,45 +222,41 @@ def duration_to_HHMMSS(
     )
 
 
-def duration_to_iso(duration: Duration) -> str:
-    return "pass"
+# def timedelta_To_isoformat(timeDelta: timedelta, strict=True) -> str:
+#     """
+#     FIXME move this to duration and drop timedelta, as it already uses duration internally
+#     if strict then limit output fields to PddDThhHmmMss.sS # Not implemeted
+#     """
+#     # int_seconds = 0
+#     # if timeDelta.days:
+#     #     int_seconds = int_seconds + (abs(timeDelta.days)*86400)
+#     # if timeDelta.seconds:
+#     #     int_seconds = int_seconds + timeDelta.seconds
+#     # minutes, seconds = divmod(int_seconds, 60)
+#     # hours, minutes = divmod(minutes, 60)
+#     # days, hours = divmod(hours, 24)
+#     # microseconds = timeDelta.microseconds
 
-
-def timedelta_To_isoformat(timeDelta: timedelta, strict=True) -> str:
-    """
-    FIXME move this to duration and drop timedelta, as it already uses duration internally
-    if strict then limit output fields to PddDThhHmmMss.sS # Not implemeted
-    """
-    # int_seconds = 0
-    # if timeDelta.days:
-    #     int_seconds = int_seconds + (abs(timeDelta.days)*86400)
-    # if timeDelta.seconds:
-    #     int_seconds = int_seconds + timeDelta.seconds
-    # minutes, seconds = divmod(int_seconds, 60)
-    # hours, minutes = divmod(minutes, 60)
-    # days, hours = divmod(hours, 24)
-    # microseconds = timeDelta.microseconds
-
-    time_split = Duration.from_timedelta(timeDelta)
-    daystext = hourstext = minutestext = secondstext = microtext = ""
-    if time_split.days:
-        daystext = f"{time_split.days}D"
-    if time_split.hours:
-        hourstext = f"{time_split.hours}H"
-    if time_split.minutes:
-        minutestext = f"{time_split.minutes}M"
-    if time_split.microseconds:
-        if not time_split.seconds:
-            time_split.seconds = 0
-        microtext = f".{time_split.microseconds:06d}"
-    if time_split.seconds or time_split.microseconds:
-        secondstext = f"{time_split.seconds}{microtext}S"
-    if not (
-        time_split.hours
-        or time_split.minutes
-        or time_split.seconds
-        or time_split.microseconds
-    ):
-        secondstext = f"{time_split.seconds}S"
-    isoString = f"P{daystext}T{hourstext}{minutestext}{secondstext}"
-    return isoString
+#     time_split = Duration.from_timedelta(timeDelta)
+#     daystext = hourstext = minutestext = secondstext = microtext = ""
+#     if time_split.days:
+#         daystext = f"{time_split.days}D"
+#     if time_split.hours:
+#         hourstext = f"{time_split.hours}H"
+#     if time_split.minutes:
+#         minutestext = f"{time_split.minutes}M"
+#     if time_split.microseconds:
+#         if not time_split.seconds:
+#             time_split.seconds = 0
+#         microtext = f".{time_split.microseconds:06d}"
+#     if time_split.seconds or time_split.microseconds:
+#         secondstext = f"{time_split.seconds}{microtext}S"
+#     if not (
+#         time_split.hours
+#         or time_split.minutes
+#         or time_split.seconds
+#         or time_split.microseconds
+#     ):
+#         secondstext = f"{time_split.seconds}S"
+#     isoString = f"P{daystext}T{hourstext}{minutestext}{secondstext}"
+#     return isoString

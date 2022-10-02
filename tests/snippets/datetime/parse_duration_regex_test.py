@@ -1,3 +1,13 @@
+####################################################
+#                                                  #
+# tests/snippets/datetime/parse_duration_regex_test.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-10-01T18:49:56-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
 from datetime import timedelta
 
 import pytest

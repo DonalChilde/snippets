@@ -1,7 +1,16 @@
-from datetime import timedelta
-from typing import Dict
+####################################################
+#                                                  #
+#      src/snippets/datetime/conversions.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-10-01T17:29:40-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
 
-NANOS_PER_SECOND = 1000000000
+NANOS_PER_SECOND = 10e9
+
 
 MINUTE = 60
 HOUR = 60 * MINUTE

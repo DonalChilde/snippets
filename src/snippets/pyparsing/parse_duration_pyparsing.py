@@ -16,12 +16,12 @@
 
 from datetime import timedelta
 
-from .duration import IsoDuration
+from ..datetime.duration import Duration
 
 
-def parse_iso_duration(duration_string: str) -> IsoDuration:
+def parse_iso_duration(duration_string: str) -> Duration:
     pass
 
 
-def parse_duration(parser, duration_string: str) -> timedelta:
-    pass
+# def parse_duration(parser, duration_string: str) -> timedelta:
+#     pass

@@ -1,15 +1,24 @@
+####################################################
+#                                                  #
+#   tests/snippets/datetime/datetime_test.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-10-01T17:31:01-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
 import logging
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
 
-# import dateutil
 import pytest
 
-from snippets.datetime.datetime import (  # tz_aware_utcnow,
-    beginning_of_week,
-    end_of_week,
-    range_of_dates,
-)
+from snippets.datetime.datetime import month_boundries, range_of_dates, week_boundries
+
+
+def test_write_the_tests():
+    assert False, "Write The Tests!"
 
 
 def test_range_of_dates():
@@ -68,126 +77,126 @@ def test_range_of_dates():
     assert date_range == expected
 
 
-def test_beginning_of_week(caplog):
-    caplog.set_level(logging.DEBUG)
+# def test_beginning_of_week(caplog):
+#     caplog.set_level(logging.DEBUG)
 
-    @dataclass
-    class InputData:
-        test_date: date
-        week_starts_on: int
-        expected_date: date
-        iso: bool
+#     @dataclass
+#     class InputData:
+#         test_date: date
+#         week_starts_on: int
+#         expected_date: date
+#         iso: bool
 
-    test_date = date(2019, 12, 20)  # Friday
-    logging.debug("test_date %s(%s)", test_date, test_date.strftime("%a"))
-    test_data = [
-        InputData(test_date, 0, date(2019, 12, 16), False),
-        InputData(test_date, 1, date(2019, 12, 17), False),
-        InputData(test_date, 2, date(2019, 12, 18), False),
-        InputData(test_date, 3, date(2019, 12, 19), False),
-        InputData(test_date, 4, date(2019, 12, 20), False),
-        InputData(test_date, 5, date(2019, 12, 14), False),
-        InputData(test_date, 6, date(2019, 12, 15), False),
-        InputData(test_date, 1, date(2019, 12, 16), True),
-        InputData(test_date, 2, date(2019, 12, 17), True),
-        InputData(test_date, 3, date(2019, 12, 18), True),
-        InputData(test_date, 4, date(2019, 12, 19), True),
-        InputData(test_date, 5, date(2019, 12, 20), True),
-        InputData(test_date, 6, date(2019, 12, 14), True),
-        InputData(test_date, 7, date(2019, 12, 15), True),
-    ]
+#     test_date = date(2019, 12, 20)  # Friday
+#     logging.debug("test_date %s(%s)", test_date, test_date.strftime("%a"))
+#     test_data = [
+#         InputData(test_date, 0, date(2019, 12, 16), False),
+#         InputData(test_date, 1, date(2019, 12, 17), False),
+#         InputData(test_date, 2, date(2019, 12, 18), False),
+#         InputData(test_date, 3, date(2019, 12, 19), False),
+#         InputData(test_date, 4, date(2019, 12, 20), False),
+#         InputData(test_date, 5, date(2019, 12, 14), False),
+#         InputData(test_date, 6, date(2019, 12, 15), False),
+#         InputData(test_date, 1, date(2019, 12, 16), True),
+#         InputData(test_date, 2, date(2019, 12, 17), True),
+#         InputData(test_date, 3, date(2019, 12, 18), True),
+#         InputData(test_date, 4, date(2019, 12, 19), True),
+#         InputData(test_date, 5, date(2019, 12, 20), True),
+#         InputData(test_date, 6, date(2019, 12, 14), True),
+#         InputData(test_date, 7, date(2019, 12, 15), True),
+#     ]
 
-    for item in test_data:
-        assert item.test_date.weekday() == 4
-        assert item.test_date.isoweekday() == 5
-        first_day = beginning_of_week(
-            date_=item.test_date, week_starts_on=item.week_starts_on, iso=item.iso
-        )
-        assert first_day == item.expected_date
-        if item.iso:
-            logging.debug(
-                "If week starts on %s, %s(index: %s, %s) is the first day of the week for %s(index: %s, %s)",
-                item.week_starts_on,
-                first_day,
-                first_day.isoweekday(),
-                first_day.strftime("%a"),
-                item.test_date,
-                item.test_date.isoweekday(),
-                item.test_date.strftime("%a"),
-            )
-        else:
-            logging.debug(
-                "If week starts on %s, %s(index: %s, %s) is the first day of the week for %s(index: %s, %s)",
-                item.week_starts_on,
-                first_day,
-                first_day.weekday(),
-                first_day.strftime("%a"),
-                item.test_date,
-                item.test_date.weekday(),
-                item.test_date.strftime("%a"),
-            )
-    # check for invalid week_starts_on
-    with pytest.raises(ValueError):
-        beginning_of_week(date(2020, 1, 1), 9, True)
+#     for item in test_data:
+#         assert item.test_date.weekday() == 4
+#         assert item.test_date.isoweekday() == 5
+#         first_day = beginning_of_week(
+#             date_value=item.test_date, week_starts_on=item.week_starts_on, iso=item.iso
+#         )
+#         assert first_day == item.expected_date
+#         if item.iso:
+#             logging.debug(
+#                 "If week starts on %s, %s(index: %s, %s) is the first day of the week for %s(index: %s, %s)",
+#                 item.week_starts_on,
+#                 first_day,
+#                 first_day.isoweekday(),
+#                 first_day.strftime("%a"),
+#                 item.test_date,
+#                 item.test_date.isoweekday(),
+#                 item.test_date.strftime("%a"),
+#             )
+#         else:
+#             logging.debug(
+#                 "If week starts on %s, %s(index: %s, %s) is the first day of the week for %s(index: %s, %s)",
+#                 item.week_starts_on,
+#                 first_day,
+#                 first_day.weekday(),
+#                 first_day.strftime("%a"),
+#                 item.test_date,
+#                 item.test_date.weekday(),
+#                 item.test_date.strftime("%a"),
+#             )
+#     # check for invalid week_starts_on
+#     with pytest.raises(ValueError):
+#         beginning_of_week(date(2020, 1, 1), 9, True)
 
 
-def test_end_of_week(caplog):
-    caplog.set_level(logging.DEBUG)
+# def test_end_of_week(caplog):
+#     caplog.set_level(logging.DEBUG)
 
-    @dataclass
-    class InputData:
-        test_date: date
-        week_starts_on: int
-        expected_date: date
-        iso: bool
+#     @dataclass
+#     class InputData:
+#         test_date: date
+#         week_starts_on: int
+#         expected_date: date
+#         iso: bool
 
-    test_date = date(2019, 12, 20)  # Friday
-    logging.debug("test_date %s(%s)", test_date, test_date.strftime("%a"))
-    test_data = [
-        InputData(test_date, 0, date(2019, 12, 22), False),
-        InputData(test_date, 1, date(2019, 12, 23), False),
-        InputData(test_date, 2, date(2019, 12, 24), False),
-        InputData(test_date, 3, date(2019, 12, 25), False),
-        InputData(test_date, 4, date(2019, 12, 26), False),
-        InputData(test_date, 5, date(2019, 12, 20), False),
-        InputData(test_date, 6, date(2019, 12, 21), False),
-        InputData(test_date, 1, date(2019, 12, 22), True),
-        InputData(test_date, 2, date(2019, 12, 23), True),
-        InputData(test_date, 3, date(2019, 12, 24), True),
-        InputData(test_date, 4, date(2019, 12, 25), True),
-        InputData(test_date, 5, date(2019, 12, 26), True),
-        InputData(test_date, 6, date(2019, 12, 20), True),
-        InputData(test_date, 7, date(2019, 12, 21), True),
-    ]
-    for item in test_data:
-        assert item.test_date.weekday() == 4
-        assert item.test_date.isoweekday() == 5
-        last_day = end_of_week(
-            date_=item.test_date, week_starts_on=item.week_starts_on, iso=item.iso
-        )
-        assert last_day == item.expected_date
-        if item.iso:
-            logging.debug(
-                "If week starts on %s, %s(index: %s, %s) is the last day of the week for %s(index: %s, %s)",
-                item.week_starts_on,
-                last_day,
-                last_day.isoweekday(),
-                last_day.strftime("%a"),
-                item.test_date,
-                item.test_date.isoweekday(),
-                item.test_date.strftime("%a"),
-            )
-        else:
-            logging.debug(
-                "If week starts on %s, %s(index: %s, %s) is the last day of the week for %s(index: %s, %s)",
-                item.week_starts_on,
-                last_day,
-                last_day.weekday(),
-                last_day.strftime("%a"),
-                item.test_date,
-                item.test_date.weekday(),
-                item.test_date.strftime("%a"),
-            )
+#     test_date = date(2019, 12, 20)  # Friday
+#     logging.debug("test_date %s(%s)", test_date, test_date.strftime("%a"))
+#     test_data = [
+#         InputData(test_date, 0, date(2019, 12, 22), False),
+#         InputData(test_date, 1, date(2019, 12, 23), False),
+#         InputData(test_date, 2, date(2019, 12, 24), False),
+#         InputData(test_date, 3, date(2019, 12, 25), False),
+#         InputData(test_date, 4, date(2019, 12, 26), False),
+#         InputData(test_date, 5, date(2019, 12, 20), False),
+#         InputData(test_date, 6, date(2019, 12, 21), False),
+#         InputData(test_date, 1, date(2019, 12, 22), True),
+#         InputData(test_date, 2, date(2019, 12, 23), True),
+#         InputData(test_date, 3, date(2019, 12, 24), True),
+#         InputData(test_date, 4, date(2019, 12, 25), True),
+#         InputData(test_date, 5, date(2019, 12, 26), True),
+#         InputData(test_date, 6, date(2019, 12, 20), True),
+#         InputData(test_date, 7, date(2019, 12, 21), True),
+#     ]
+#     for item in test_data:
+#         assert item.test_date.weekday() == 4
+#         assert item.test_date.isoweekday() == 5
+#         last_day = end_of_week(
+#             date_=item.test_date, week_starts_on=item.week_starts_on, iso=item.iso
+#         )
+#         assert last_day == item.expected_date
+#         if item.iso:
+#             logging.debug(
+#                 "If week starts on %s, %s(index: %s, %s) is the last day of the week for %s(index: %s, %s)",
+#                 item.week_starts_on,
+#                 last_day,
+#                 last_day.isoweekday(),
+#                 last_day.strftime("%a"),
+#                 item.test_date,
+#                 item.test_date.isoweekday(),
+#                 item.test_date.strftime("%a"),
+#             )
+#         else:
+#             logging.debug(
+#                 "If week starts on %s, %s(index: %s, %s) is the last day of the week for %s(index: %s, %s)",
+#                 item.week_starts_on,
+#                 last_day,
+#                 last_day.weekday(),
+#                 last_day.strftime("%a"),
+#                 item.test_date,
+#                 item.test_date.weekday(),
+#                 item.test_date.strftime("%a"),
+#             )
 
 
 # def test_tz_aware_utcnow(caplog):
