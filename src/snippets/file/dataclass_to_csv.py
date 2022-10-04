@@ -1,3 +1,13 @@
+####################################################
+#                                                  #
+#    src/snippets/file/dataclass_to_csv.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-10-04T11:11:32-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
 import csv
 from dataclasses import asdict
 from pathlib import Path
