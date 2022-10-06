@@ -14,8 +14,8 @@ Various duration parsing strategies using regex.
 """
 
 import re
-from datetime import timedelta
-from typing import Dict
+
+from snippets.datetime.duration_dict import DurationDict
 
 # from .duration import IsoDuration
 
@@ -31,7 +31,7 @@ FS = r"(?P<fractional_seconds>([0-9]+))"
 #     pass
 
 
-def parse_duration(pattern: re.Pattern, duration_string: str) -> timedelta:
+def parse_duration(pattern: re.Pattern, duration_string: str) -> DurationDict:
     """
     Parse a duration string
 
@@ -54,19 +54,29 @@ def parse_duration(pattern: re.Pattern, duration_string: str) -> timedelta:
     possible_groups = ["hours", "minutes", "seconds", "fractional_seconds"]
     for unit in possible_groups:
         if unit not in match_dict or match_dict[unit] is None:
-            match_dict[unit] = 0
-    match_dict["hours"] = match_dict["hours"].replace(",", "")
-    match_dict["hours"] = match_dict["hours"].replace(".", "")
-    match_dict["hours"] = int(match_dict["hours"])
-    match_dict["minutes"] = int(match_dict["minutes"])
-    match_dict[
-        "seconds"
-    ] = f"{match_dict['seconds']}.{match_dict['fractional_seconds']}"
-    match_dict["seconds"] = float(match_dict["seconds"])
-    match_dict.pop("fractional_seconds")
+            match_dict[unit] = "0"
+    dur: DurationDict = {
+        "years": int(match_dict["years"]),
+        "days": int(match_dict["days"]),
+        "hours": int(match_dict["hours"]),
+        "minutes": int(match_dict["minutes"]),
+        "seconds": int(match_dict["seconds"]),
+        "fractional_seconds": int(match_dict["fractional_seconds"]),
+        "exponent": len(match_dict["fractional_seconds"]) * -1,
+    }
+    # match_dict["hours"] = match_dict["hours"].replace(",", "")
+    # match_dict["hours"] = match_dict["hours"].replace(".", "")
+    # match_dict["hours"] = int(match_dict["hours"])
+    # match_dict["minutes"] = int(match_dict["minutes"])
+    # match_dict[
+    #     "seconds"
+    # ] = f"{match_dict['seconds']}.{match_dict['fractional_seconds']}"
+    # match_dict["seconds"] = float(match_dict["seconds"])
+    # match_dict.pop("fractional_seconds")
 
-    print(match_dict)
-    return timedelta(**match_dict)  # type: ignore
+    # print(match_dict)
+    # return timedelta(**match_dict)  # type: ignore
+    return dur
 
 
 def pattern_HHHMMSSFS(
