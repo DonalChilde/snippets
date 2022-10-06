@@ -48,6 +48,8 @@ from datetime import timedelta
 from decimal import Decimal
 from typing import TypedDict
 
+from snippets.datetime.duration_dict import DurationDict
+from snippets.datetime.factor_timedelta import factor_timedelta
 
 # class Duration:
 #     def __init__(
@@ -60,44 +62,6 @@ from typing import TypedDict
 #         # make immutable
 #         # constructors from common sources, ie nanoseconds, timedelta
 #         # output to string, iso
-class DurationDict(TypedDict):
-    years: int
-    days: int
-    hours: int
-    minutes: int
-    seconds: int
-    fractional_seconds: int
-    exponent: int
-
-
-def factor_timedelta(delta: timedelta) -> DurationDict:
-    """
-    Split a time delta to a dict of years, days, hours, minutes, seconds, microseconds.
-
-    https://stackoverflow.com/a/17847006/105844
-
-    Args:
-        delta: The timedelta to split
-    Returns:
-        A dict of the times in the timedelta
-    """
-    abs_delta = abs(delta)
-    years, rem = divmod(abs_delta, timedelta(days=365))
-    days, rem = divmod(rem, timedelta(days=1))
-    hours, rem = divmod(rem, timedelta(hours=1))
-    minutes, rem = divmod(rem, timedelta(minutes=1))
-    seconds = int(rem.total_seconds())
-    fractional_seconds = rem.microseconds
-    exponent = -6
-    return DurationDict(
-        years=years,
-        days=days,
-        hours=hours,
-        minutes=minutes,
-        seconds=seconds,
-        fractional_seconds=fractional_seconds,
-        exponent=exponent,
-    )
 
 
 @dataclass(frozen=True)
@@ -114,13 +78,18 @@ class Duration:
     TODO immutable, iso format in/out
     TODO support math
     TODO interaction of precision, how and when to define.
+    TODO __str__ as iso
+    TODO fields as DurationDict, then can replace durationdict
+    TODO handle fractional leading and trailing zeros. send through Decimal?
     """
 
     years: int = 0
     days: int = 0
     hours: int = 0
     minutes: int = 0
-    seconds: Decimal = Decimal(0)
+    seconds: int = 0
+    fractional_seconds: int = 0
+    exponent: int = 0
     precision: int = 9
 
     def __post_init__(self):
