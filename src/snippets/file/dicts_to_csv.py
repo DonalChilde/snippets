@@ -50,7 +50,7 @@ def dicts_to_csv(
         first = next(dict_gen)
         fieldnames: Sequence = list(first.keys())
         write_iter: chain[Dict] | Generator[Dict, None, None] = chain(
-            tuple(first), dict_gen
+            (first,), dict_gen
         )
     else:
         fieldnames = fields
