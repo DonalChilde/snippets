@@ -3,7 +3,6 @@
 Version: 1.0
 Last_Edit: 2019-10-21T14:45:20Z
 """
-from typing import Any
 
 
 def stringInsert():
@@ -14,19 +13,6 @@ def stringInsert():
     index = line.find("Panda")
     output_line = line[:index] + "Fu " + line[index:]
     assert output_line == "Kong Fu Panda"
-
-
-def safeStrip(value: Any) -> Any:
-    """Strip whitespace from a string value, if value is a string.
-
-    :param value: possible string to strip
-    :returns: Stripped string if value was string, else original value.
-    """
-    if isinstance(value, str):
-        new_value = value.strip()
-        return new_value
-    else:
-        return value
 
 
 def strip_end(text: str, suffix: str, case_insensitive: bool = False) -> str:
