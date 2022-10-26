@@ -14,6 +14,9 @@ from typing import Any, Dict, Generator, Iterable, Optional, Sequence
 
 from .dicts_to_csv import dicts_to_csv
 
+# FIXME the idea of this separate class is superseeded by chaining iterables to end up
+# with a dict for the standard function.
+
 
 def dataclasses_to_csv(
     dataclasses: Iterable,
