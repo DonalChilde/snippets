@@ -9,6 +9,8 @@
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
+import time
+from calendar import isleap
 from datetime import datetime, timedelta, tzinfo
 
 logger = logging.getLogger(__name__)
@@ -16,54 +18,73 @@ logger.addHandler(logging.NullHandler())
 
 
 def complete_fwd_time(
-    ref_datetime: datetime,
-    partial_string: str,
+    start: datetime,
+    future: str,
     tz_info: tzinfo | None,
     strf: str = "%H:%M:%S",
 ) -> datetime:
-    if ref_datetime.tzinfo is None and tzinfo is not ref_datetime.tzinfo:
+    if start.tzinfo is None and tz_info is not start.tzinfo:
         raise ValueError("tz_info must be None if ref_datetime.tzinfo is None.")
-    partial = datetime.strptime(partial_string, strf)
-    partial = partial.replace(
-        year=ref_datetime.year,
-        month=ref_datetime.month,
-        day=ref_datetime.day,
+    parsed = time.strptime(future, strf)
+    partial = datetime(
+        year=start.year,
+        month=start.month,
+        day=start.day,
+        hour=parsed.tm_hour,
+        minute=parsed.tm_min,
+        second=parsed.tm_sec,
         tzinfo=tz_info,
     )
-    if partial < ref_datetime:
+
+    if partial < start:
         increment = timedelta(days=1)
         logger.debug("adding %s to %s", increment, partial.isoformat())
         partial = partial + increment
-    if partial < ref_datetime:
+    if partial < start:
         raise ValueError(
             f"fwd time {partial.isoformat()} still shows as "
-            f"less than ref {ref_datetime.isoformat()}"
+            f"less than ref {start.isoformat()}"
         )
     return partial
 
 
 def complete_fwd_mdt(
-    ref_datetime: datetime,
-    partial_string: str,
+    start: datetime,
+    future: str,
     tz_info: tzinfo | None,
     strf: str = "%m/%d %H:%M",
 ) -> datetime:
-    if ref_datetime.tzinfo is None and tz_info is not ref_datetime.tzinfo:
+    if start.tzinfo is None and tz_info is not start.tzinfo:
         raise ValueError("tz must be None if ref_datetime.tzinfo is None.")
-
-    partial = datetime.strptime(partial_string, strf)
-    partial = partial.replace(
-        year=ref_datetime.year,
+    # Use time.strptime because datetime.strptime will not parse 02/29 without a valid year
+    parsed = time.strptime(future, strf)
+    year = start.year
+    if parsed.tm_mon == 2 and parsed.tm_mday == 29:
+        # if the start year is not a leap year, find the next leap year.
+        while not isleap(year):
+            year += 1
+    partial = datetime(
+        year=year,
+        month=parsed.tm_mon,
+        day=parsed.tm_mday,
+        hour=parsed.tm_hour,
+        minute=parsed.tm_min,
+        second=parsed.tm_sec,
         tzinfo=tz_info,
     )
-    if partial < ref_datetime:
+    # partial = datetime.strptime(partial_string, strf)
+    # partial = partial.replace(
+    #     year=ref_datetime.year,
+    #     tzinfo=tz_info,
+    # )
+    if partial < start:
         logger.debug("adding one year to %s", partial.isoformat())
         partial = partial.replace(year=partial.year + 1)
 
-    if partial < ref_datetime:
+    if partial < start:
         raise ValueError(
             f"fwd time {partial.isoformat()} still shows as "
-            f"less than ref {ref_datetime.isoformat()}"
+            f"less than ref {start.isoformat()}"
         )
     return partial
 
