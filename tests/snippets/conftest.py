@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from ..logging import rotating_file_logger
+from snippets.logging.logging import rotating_file_logger
 
 APP_LOG_LEVEL = logging.INFO
 TEST_LOG_LEVEL = logging.DEBUG
