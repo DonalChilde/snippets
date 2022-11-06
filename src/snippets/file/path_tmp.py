@@ -7,6 +7,9 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
+# FIXME split up tese functions, move to snippets.file.path
+
+
 def delta_path(base_path: Path, item_path: Path, new_base_path: Path) -> Path:
     """
     Removes a base path from an item, and appends result to a new path

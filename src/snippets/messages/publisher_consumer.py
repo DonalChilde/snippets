@@ -57,7 +57,7 @@ class MessagePublisher:
 
     def __init__(self, consumers: Sequence[MessageConsumer]) -> None:
 
-        self.consumers = consumers
+        self.consumers = list(consumers)
 
     def publish_message(
         self,

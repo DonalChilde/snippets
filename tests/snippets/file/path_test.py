@@ -3,7 +3,7 @@ from typing import Sequence
 
 import pytest
 
-from snippets.file.path import collect_paths, delta_path, delta_paths
+from snippets.file.path_tmp import collect_paths, delta_path, delta_paths
 
 
 def test_delta_path():

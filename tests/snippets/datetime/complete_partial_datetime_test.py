@@ -5,15 +5,15 @@ from typing import List
 from zoneinfo import ZoneInfo
 
 from snippets.datetime.complete_partial_datetime import (
-    complete_fwd_mdt,
-    complete_fwd_time,
+    complete_future_mdt,
+    complete_future_time,
 )
 
-target_logger = logging.getLogger(complete_fwd_time.__module__)
+target_logger = logging.getLogger(complete_future_time.__module__)
 
 
 @dataclass
-class TestData:
+class TestingData:
     start: datetime
     strf: str
     expected: datetime
@@ -36,13 +36,13 @@ class TestData:
 def test_fwd_time_no_tz(logger: logging.Logger):
     for handler in logger.handlers:
         target_logger.addHandler(handler)
-    test_data: List[TestData] = []
+    test_data: List[TestingData] = []
     start = datetime(year=2022, month=12, day=31, hour=13, minute=00)
     strf = "%H:%M"
     future = "02:30"
     expected = datetime(year=2023, month=1, day=1, hour=2, minute=30)
     test_data.append(
-        TestData(
+        TestingData(
             start=start,
             strf=strf,
             expected=expected,
@@ -53,7 +53,7 @@ def test_fwd_time_no_tz(logger: logging.Logger):
 
 
 def test_fwd_time_with_tz():
-    test_data: List[TestData] = []
+    test_data: List[TestingData] = []
     start_tz = ZoneInfo("America/Phoenix")
     expected_tz = ZoneInfo("America/New_York")
     start = datetime(year=2022, month=12, day=31, hour=13, minute=00, tzinfo=start_tz)
@@ -63,7 +63,7 @@ def test_fwd_time_with_tz():
         year=2023, month=1, day=1, hour=2, minute=30, tzinfo=expected_tz
     )
     test_data.append(
-        TestData(
+        TestingData(
             start=start,
             strf=strf,
             expected=expected,
@@ -73,9 +73,9 @@ def test_fwd_time_with_tz():
     do_fwd_time_tests(test_data)
 
 
-def do_fwd_time_tests(test_values: List[TestData]):
+def do_fwd_time_tests(test_values: List[TestingData]):
     for item in test_values:
-        result = complete_fwd_time(
+        result = complete_future_time(
             start=item.start,
             future=item.future,
             tz_info=item.expected.tzinfo,
@@ -88,11 +88,12 @@ def do_fwd_time_tests(test_values: List[TestData]):
         # assert False
 
 
-def do_fwd_mdt_tests(test_values: List[TestData]):
+def do_fwd_mdt_tests(test_values: List[TestingData]):
     for item in test_values:
-        result = complete_fwd_mdt(
+        result = complete_future_mdt(
             start=item.start,
             future=item.future,
+            strf=item.strf,
             tz_info=item.expected.tzinfo,
         )
         print("ref", item.start.isoformat())
@@ -105,13 +106,13 @@ def do_fwd_mdt_tests(test_values: List[TestData]):
 def test_fwd_mdt_no_tz(logger: logging.Logger):
     for handler in logger.handlers:
         target_logger.addHandler(handler)
-    test_data: List[TestData] = []
+    test_data: List[TestingData] = []
     start = datetime(year=2022, month=12, day=31, hour=13, minute=00)
     strf = "%m/%d %H:%M"
     future = "01/01 02:30"
     expected = datetime(year=2023, month=1, day=1, hour=2, minute=30)
     test_data.append(
-        TestData(
+        TestingData(
             start=start,
             strf=strf,
             expected=expected,
@@ -121,7 +122,19 @@ def test_fwd_mdt_no_tz(logger: logging.Logger):
     future = "02/29 02:30"
     expected = datetime(year=2024, month=2, day=29, hour=2, minute=30)
     test_data.append(
-        TestData(
+        TestingData(
+            start=start,
+            strf=strf,
+            expected=expected,
+            future=future,
+        )
+    )
+    # Just short date no time
+    strf = "%m/%d"
+    future = "02/29"
+    expected = datetime(year=2024, month=2, day=29)
+    test_data.append(
+        TestingData(
             start=start,
             strf=strf,
             expected=expected,
@@ -129,12 +142,13 @@ def test_fwd_mdt_no_tz(logger: logging.Logger):
         )
     )
     do_fwd_mdt_tests(test_data)
+    # assert False
 
 
 def test_fwd_mdt_with_tz(logger: logging.Logger):
     for handler in logger.handlers:
         target_logger.addHandler(handler)
-    test_data: List[TestData] = []
+    test_data: List[TestingData] = []
     start_tz = ZoneInfo("America/Phoenix")
     expected_tz = ZoneInfo("America/New_York")
     start = datetime(year=2022, month=12, day=31, hour=13, minute=00, tzinfo=start_tz)
@@ -144,7 +158,7 @@ def test_fwd_mdt_with_tz(logger: logging.Logger):
         year=2023, month=1, day=1, hour=2, minute=30, tzinfo=expected_tz
     )
     test_data.append(
-        TestData(
+        TestingData(
             start=start,
             strf=strf,
             expected=expected,
@@ -156,7 +170,19 @@ def test_fwd_mdt_with_tz(logger: logging.Logger):
         year=2024, month=2, day=29, hour=2, minute=30, tzinfo=expected_tz
     )
     test_data.append(
-        TestData(
+        TestingData(
+            start=start,
+            strf=strf,
+            expected=expected,
+            future=future,
+        )
+    )
+    # Just short date no time
+    strf = "%m/%d"
+    future = "02/29"
+    expected = datetime(year=2024, month=2, day=29, tzinfo=expected_tz)
+    test_data.append(
+        TestingData(
             start=start,
             strf=strf,
             expected=expected,

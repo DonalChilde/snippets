@@ -1,3 +1,13 @@
+####################################################
+#                                                  #
+#          src/snippets/logging/logging.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2022-10-31T08:12:18-07:00            #
+# Last Modified: _iso_date_         #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
 """
 Convenience functions for logging.
 
@@ -5,6 +15,9 @@ Convenience functions for logging.
 import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 
 def rotating_file_handler(
@@ -58,14 +71,47 @@ def rotating_file_logger(
     Returns:
         The logger.
     """
-    logger = logging.getLogger(log_name)
+    logger_ = logging.getLogger(log_name)
     handler = rotating_file_handler(
         log_dir=log_dir, file_name=log_name, log_level=log_level
     )
-    logger.addHandler(handler)
-    logger.setLevel(log_level)
-    logger.info("Rotating file logger initialized with %r", handler)
-    return logger
+    logger_.addHandler(handler)
+    logger_.setLevel(log_level)
+    logger_.info("Rotating file logger initialized with %r", handler)
+    return logger_
+
+
+def add_handlers_to_target_logger_by_name(
+    source_logger: logging.Logger, target_logger_name: str
+):
+    """Add the handlers of one logger to another logger, by logger name.
+
+    Do this to enable logging for libraries, presumed to have a nullhandler.
+    target_object.__module__.__name__
+    """
+    target_logger = logging.getLogger(target_logger_name)
+    for handler in source_logger.handlers:
+        source_logger.info(
+            "Attempting to add %s from %s to %s", handler, source_logger, target_logger
+        )
+        target_logger.addHandler(handler)
+    target_logger.info("Added handlers from %s to %s", source_logger, target_logger)
+
+
+def add_handlers_to_target_logger(
+    source_logger: logging.Logger, target_logger: logging.Logger
+):
+    """Add the handlers of one logger to another logger.
+
+    Do this to enable logging for libraries, presumed to have a nullhandler.
+    target_object.__module__.__name__
+    """
+    for handler in source_logger.handlers:
+        source_logger.info(
+            "Attempting to add %s from %s to %s", handler, source_logger, target_logger
+        )
+        target_logger.addHandler(handler)
+    target_logger.info("Added handlers from %s to %s", source_logger, target_logger)
 
 
 # def configure_file_logger(
