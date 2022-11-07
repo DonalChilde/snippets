@@ -12,10 +12,12 @@ import logging
 from datetime import timezone
 from typing import Any, Mapping
 
-from snippets.datetime.datetime_from_struct_time import datetime_from_struct
+from .datetime_from_struct_time import datetime_from_struct
 
 
 class TZAwareFormatter(logging.Formatter):
+    # default_time_format = "%Y"
+
     def __init__(
         self,
         fmt: str | None = None,
@@ -35,7 +37,7 @@ class TZAwareFormatter(logging.Formatter):
         new_dt = datetime_from_struct(struct, microsecond=micros)
         if datefmt == "iso":
             dt_string = new_dt.isoformat()
-        if datefmt == "iso_utc":
+        elif datefmt == "iso_utc":
             new_dt = new_dt.astimezone(timezone.utc)
             dt_string = new_dt.isoformat()
         elif datefmt:
