@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-11-02T07:58:50-07:00            #
-# Last Modified: 2022-11-06T07:30:52-07:00         #
+# Last Modified: 2022-12-03T23:49:02.362976+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from datetime import date, datetime, time, tzinfo
@@ -13,6 +13,7 @@ from time import struct_time
 from zoneinfo import ZoneInfo
 
 
+# FIXME check aa_exporter for fixes re tz and struct time, also complete partial datetime
 def date_from_struct(
     struct: struct_time,
     year: int | None = None,
