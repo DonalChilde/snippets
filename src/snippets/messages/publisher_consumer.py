@@ -5,22 +5,23 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-14T04:34:10-07:00            #
-# Last Modified: _iso_date_         #
+# Last Modified: 2022-12-03T23:50:31.883184+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
-from typing import Dict, Sequence
+from abc import ABC, abstractmethod
+from typing import Dict, Protocol, Sequence
+
+# FIXME use protocol
 
 
-class MessageConsumer:
+class MessageConsumer(ABC):
     """
     A consumer of messages.
 
     Subclass this, and override `consume_messages` to provide custom behavior.
     """
 
-    def __init__(self) -> None:
-        pass
-
+    @abstractmethod
     def consume_message(
         self,
         msg: str,
@@ -30,7 +31,7 @@ class MessageConsumer:
         extras: Dict | None = None,
     ):
         """
-        Message consumer, usually called from a :class:`MessagePublisher`
+        Message consumer, usually called from a :class:`MessagePublisherMixin`
 
         Consumes a message in a particular way, eg. print to stdout
 
@@ -47,17 +48,18 @@ class MessageConsumer:
         raise NotImplementedError("Subclass and override this method.")
 
 
-class MessagePublisher:
+class HasMessageConsumersProtocol(Protocol):
+    @property
+    def message_consumers(self) -> Sequence[MessageConsumer]:
+        "Has `self.message_consumers: Sequence[MessageConsumer]`"
+
+
+class MessagePublisherMixin(HasMessageConsumersProtocol):
     """
-    Holds message consumers, and publishes messages to them.
+    Provides the publish_message method.
 
-    Args:
-        consumers: The message consumers.
+    Expects to find `self.message_consumers: Sequence[MessageConsumer]` defined on class.
     """
-
-    def __init__(self, consumers: Sequence[MessageConsumer]) -> None:
-
-        self.consumers = list(consumers)
 
     def publish_message(
         self,
@@ -77,7 +79,7 @@ class MessagePublisher:
                 log levels. Defaults to None.
             extras: A optional Dict which can hold extra information. Defaults to None.
         """
-        for consumer in self.consumers:
+        for consumer in self.message_consumers:
             consumer.consume_message(msg, category=category, level=level, extras=extras)
 
 
