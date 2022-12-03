@@ -4,14 +4,12 @@ requires = ["setuptools >= 58.0.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name="Pfmsoft_Snippets"
+name = "Pfmsoft_Snippets"
 description = "A Collection of snippets and code examples"
 # readme = "README.rst"
 requires-python = ">=3.10"
-keywords = [
-    "Python",
-]
-license = {file = "LICENSE"}
+keywords = ["Python"]
+license = { file = "LICENSE" }
 # https://pypi.org/classifiers/
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -21,14 +19,12 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
 ]
-dependencies=[
-
-]
-dynamic = ["version","readme"]
+dependencies = []
+dynamic = ["version", "readme"]
 
 [tool.setuptools.dynamic]
-version = {attr = "snippets.__version__"}
-readme = {file = ["README.rst"]}
+version = { attr = "snippets.__version__" }
+readme = { file = ["README.rst"] }
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -125,7 +121,7 @@ target-version = ['py310']
 
 [tool.pylint.format]
 # for black compatability
-max-line-length = "88"
+max-line-length = "95"
 
 # https://docs.pytest.org/en/6.2.x/customize.html#pyproject-toml
 # [tool.pytest.ini_options]
