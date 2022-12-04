@@ -5,23 +5,13 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-14T04:34:10-07:00            #
-# Last Modified: 2022-12-03T23:50:31.883184+00:00  #
+# Last Modified: 2022-12-04T00:33:38.356251+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
-from abc import ABC, abstractmethod
 from typing import Dict, Protocol, Sequence
 
-# FIXME use protocol
 
-
-class MessageConsumer(ABC):
-    """
-    A consumer of messages.
-
-    Subclass this, and override `consume_messages` to provide custom behavior.
-    """
-
-    @abstractmethod
+class MessageConsumerProtocol(Protocol):
     def consume_message(
         self,
         msg: str,
@@ -41,17 +31,11 @@ class MessageConsumer(ABC):
             level: An optional int used to differentiate messages. Can correspond to
                 log levels. Defaults to None.
             extras: A optional Dict which can hold extra information. Defaults to None.
-
-        Raises:
-            NotImplementedError: _description_
         """
-        raise NotImplementedError("Subclass and override this method.")
 
 
 class HasMessageConsumersProtocol(Protocol):
-    @property
-    def message_consumers(self) -> Sequence[MessageConsumer]:
-        "Has `self.message_consumers: Sequence[MessageConsumer]`"
+    message_consumers: Sequence[MessageConsumerProtocol]
 
 
 class MessagePublisherMixin(HasMessageConsumersProtocol):
@@ -83,7 +67,7 @@ class MessagePublisherMixin(HasMessageConsumersProtocol):
             consumer.consume_message(msg, category=category, level=level, extras=extras)
 
 
-class StdoutConsumer(MessageConsumer):
+class StdoutConsumer(MessageConsumerProtocol):
     """
     Print messages to stdout.
     """
