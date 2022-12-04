@@ -5,14 +5,14 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-11-06T07:58:01-07:00            #
-# Last Modified: _iso_date_         #
+# Last Modified: 2022-12-04T01:11:10.072677+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
 from datetime import timezone
 from typing import Any, Mapping
 
-from .datetime_from_struct_time import datetime_from_struct
+from snippets.datetime.datetime_from_struct_time import datetime_from_struct
 
 
 class TZAwareFormatter(logging.Formatter):
