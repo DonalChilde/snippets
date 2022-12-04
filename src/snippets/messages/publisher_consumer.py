@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-14T04:34:10-07:00            #
-# Last Modified: 2022-12-04T00:33:38.356251+00:00  #
+# Last Modified: 2022-12-04T00:49:48.378209+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from typing import Dict, Protocol, Sequence
@@ -38,12 +38,14 @@ class HasMessageConsumersProtocol(Protocol):
     message_consumers: Sequence[MessageConsumerProtocol]
 
 
-class MessagePublisherMixin(HasMessageConsumersProtocol):
+class MessagePublisherMixin:
     """
     Provides the publish_message method.
 
     Expects to find `self.message_consumers: Sequence[MessageConsumer]` defined on class.
     """
+
+    message_consumers: Sequence[MessageConsumerProtocol]
 
     def publish_message(
         self,
