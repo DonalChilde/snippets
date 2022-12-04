@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-11-02T07:58:50-07:00            #
-# Last Modified: 2022-12-03T23:49:02.362976+00:00  #
+# Last Modified: 2022-12-04T00:56:52.171104+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from datetime import date, datetime, time, tzinfo
@@ -13,7 +13,6 @@ from time import struct_time
 from zoneinfo import ZoneInfo
 
 
-# FIXME check aa_exporter for fixes re tz and struct time, also complete partial datetime
 def date_from_struct(
     struct: struct_time,
     year: int | None = None,
@@ -55,6 +54,7 @@ def datetime_from_struct(
     second: int | None = None,
     microsecond: int | None = None,
     tz_info: tzinfo | None = None,
+    aware: bool = True,
 ) -> datetime:
     if year is None:
         year = struct.tm_year
@@ -70,6 +70,16 @@ def datetime_from_struct(
         second = struct.tm_sec
     if microsecond is None:
         microsecond = 0
-    if tz_info is None:
-        tz_info = ZoneInfo(struct.tm_zone)
-    return datetime(year, month, day, hour, minute, second, tzinfo=tz_info)
+    if aware:
+        if tz_info is None:
+            try:
+                tz_info = ZoneInfo(struct.tm_zone)
+            except Exception as error:
+                raise ValueError(
+                    f"Tried to make an aware datetime with {struct}, got {error}"
+                ) from error
+        return datetime(
+            year, month, day, hour, minute, second, microsecond, tzinfo=tz_info
+        )
+
+    return datetime(year, month, day, hour, minute, second, microsecond, tzinfo=None)
