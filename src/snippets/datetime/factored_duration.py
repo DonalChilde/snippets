@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-12-03T17:59:04-07:00            #
-# Last Modified: 2022-12-04T01:00:32.152328+00:00  #
+# Last Modified: 2023-02-19T17:16:13.361887+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from dataclasses import asdict, dataclass
@@ -28,6 +28,7 @@ class FactoredDuration:
     seconds: int = 0
     fractional_seconds: int = 0
     # fractional_exponent should be => magnitude of fractional seconds
+    # TODO clarify this, maybe refactor fractional_exponent name. give example.
     fractional_exponent: int = 1
 
     def seconds_as_Decimal(self) -> Decimal:

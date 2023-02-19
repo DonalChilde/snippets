@@ -5,9 +5,10 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-27T10:37:56-07:00            #
-# Last Modified: 2022-12-04T00:56:52.170363+00:00  #
+# Last Modified: 2023-02-19T17:16:13.360642+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
+import datetime as DT
 import logging
 import time
 from calendar import isleap
@@ -17,6 +18,20 @@ from snippets.datetime.datetime_from_struct_time import datetime_from_struct
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
+
+
+def get_future_time(reference_date: datetime, future_time: DT.time) -> datetime:
+    if future_time.tzinfo is not None and reference_date.tzinfo != future_time.tzinfo:
+        raise ValueError(
+            f"If future_time has a tzinfo, it must match reference_date tzinfo."
+            f" reference_date={reference_date!r}, future_time={future_time!r}",
+        )
+    if reference_date.time() <= future_time:
+        # Time is later on the same day
+        return reference_date.combine(reference_date.date(), future_time)
+    # Time is on the next day
+    reference_date = reference_date + timedelta(days=1)
+    return reference_date.combine(reference_date.date(), future_time)
 
 
 def complete_future_time(
