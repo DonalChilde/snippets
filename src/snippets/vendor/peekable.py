@@ -1,11 +1,11 @@
 ####################################################
 #                                                  #
-# src/snippets/iterators/local_peekable.py
+#        src/snippets/vendor/peekable.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-18T13:33:59-07:00            #
-# Last Modified: _iso_date_         #
+# Last Modified: 2023-03-17T20:21:49.512581+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 """
