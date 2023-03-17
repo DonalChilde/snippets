@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-04T11:11:32-07:00            #
-# Last Modified: _iso_date_         #
+# Last Modified: 2023-03-17T21:48:10.625156+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from dataclasses import asdict
@@ -45,9 +45,9 @@ def dataclasses_to_csv(
     dict_gen: Generator[Dict, None, None] = (asdict(x) for x in dataclasses)
     dicts_to_csv(
         dicts=dict_gen,
-        output_path=output_path,
+        file_path=output_path,
         parents=parents,
-        overwrite_ok=overwrite_ok,
+        overwrite=overwrite_ok,
         write_header=write_header,
         fields=fields,
         restval=restval,
