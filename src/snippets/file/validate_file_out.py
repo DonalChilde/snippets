@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-29T09:11:28-07:00            #
-# Last Modified: 2023-03-17T20:21:19.922983+00:00  #
+# Last Modified: 2023-03-17T20:30:10.842010+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from pathlib import Path
@@ -32,4 +32,10 @@ def validate_file_out(
     if ensure_parent:
         parent = file_path.parent
         parent.mkdir(parents=True, exist_ok=True)
-    return file_path.parent.is_dir()
+    if not file_path.parent.is_dir():
+        raise ValueError(
+            f"file_path is an invalid destination. "
+            "It's parent directory is not a directory, or it doesn't exist."
+            f"file_path = {file_path}"
+        )
+    return True
