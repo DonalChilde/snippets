@@ -1,18 +1,18 @@
 ####################################################
 #                                                  #
-#       src/snippets/string/indexed_string.py
+#  src/snippets/indexed_string/indexed_string_dc.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-11-02T07:34:02-07:00            #
-# Last Modified: 2023-02-05T13:07:21.336752+00:00  #
+# Last Modified: 2023-04-15T23:08:58.641444+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from dataclasses import dataclass
 
 
 @dataclass
-class IndexedString:
+class IndexedStringDC:
     idx: int
     txt: str
 

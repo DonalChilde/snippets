@@ -1,11 +1,11 @@
 ####################################################
 #                                                  #
-# src/snippets/state_parser/state_parser_protocols.py
+# src/snippets/indexed_string/state_parser/state_parser_protocols.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:13-07:00            #
-# Last Modified: 2023-02-05T17:03:55.124038+00:00  #
+# Last Modified: 2023-04-15T23:08:58.643079+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 """
@@ -16,8 +16,8 @@ knowing what the previous section was.
 """
 from typing import Any, Protocol, Sequence
 
-from snippets.state_parser.parse_exception import ParseException
-from snippets.string.indexed_string_protocol import IndexedStringProtocol
+from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
+from snippets.indexed_string.state_parser.parse_exception import ParseException
 
 
 class ParsedIndexedString(Protocol):
@@ -33,7 +33,7 @@ class ParsedIndexedString(Protocol):
     source: IndexedStringProtocol
 
 
-class ParseResult(Protocol):
+class ParseResultProtocol(Protocol):
     """The result of a successful parse.
 
     Attributes:
@@ -46,12 +46,12 @@ class ParseResult(Protocol):
     parsed_data: ParsedIndexedString
 
 
-class IndexedStringParser(Protocol):
+class IndexedStringParserProtocol(Protocol):
     """Parse an IndexedString."""
 
     def parse(
         self, indexed_string: IndexedStringProtocol, ctx: dict[str, Any], **kwargs
-    ) -> ParseResult:
+    ) -> ParseResultProtocol:
         """
         A parse function that matches an IndexedString.
 
@@ -72,14 +72,14 @@ class IndexedStringParser(Protocol):
         raise ParseException
 
 
-class ResultHandler(Protocol):
+class ResultHandlerProtocol(Protocol):
     """Do something with the result of a successful parse."""
 
-    def handle_result(self, parse_result: ParseResult, **kwargs):
+    def handle_result(self, parse_result: ParseResultProtocol, **kwargs):
         ...
 
 
-class ExpectedParsers(Protocol):
+class ExpectedParsersProtocol(Protocol):
     """Get a list of parsers expected to match the next string.
 
     The state string is usually obtained during the previous parse, where a successful
@@ -88,19 +88,21 @@ class ExpectedParsers(Protocol):
 
     def expected_parsers(
         self, current_state: str, **kwargs
-    ) -> Sequence[IndexedStringParser]:
+    ) -> Sequence[IndexedStringParserProtocol]:
         ...
 
 
-class ParseManager(Protocol):
+class ParseManagerProtocol(Protocol):
     """Holds references to the ResultHandler, ExpectedParsers, and a context dict."""
 
     ctx: dict[str, Any]
-    result_handler: ResultHandler
-    parse_scheme: ExpectedParsers
+    result_handler: ResultHandlerProtocol
+    parse_scheme: ExpectedParsersProtocol
 
-    def expected_parsers(self, state: str, **kwargs) -> Sequence[IndexedStringParser]:
+    def expected_parsers(
+        self, state: str, **kwargs
+    ) -> Sequence[IndexedStringParserProtocol]:
         return self.expected_parsers(state=state)
 
-    def handle_result(self, parse_result: ParseResult, **kwargs):
+    def handle_result(self, parse_result: ParseResultProtocol, **kwargs):
         return self.result_handler.handle_result(parse_result=parse_result)

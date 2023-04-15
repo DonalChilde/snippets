@@ -1,16 +1,12 @@
 ####################################################
 #                                                  #
-#  src/snippets/string/indexed_string_protocol.py
+#  src/snippets/indexed_string/state_parser/parse_exception.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
-# Created on: 2023-02-05T06:05:14-07:00            #
-# Last Modified: 2023-02-05T13:07:21.338415+00:00  #
+# Created on: 2023-02-05T05:59:31-07:00            #
+# Last Modified: 2023-04-15T23:08:58.642420+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
-from typing import Protocol
-
-
-class IndexedStringProtocol(Protocol):
-    idx: int
-    txt: str
+class ParseException(Exception):
+    """Use this exception to signal a failed parse."""
