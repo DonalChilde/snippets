@@ -1,20 +1,22 @@
 ####################################################
 #                                                  #
-# src/snippets/indexed_string/state_parser/parse.py
+# src/snippets/indexed_string/state_parser/parse_indexed_strings.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
-# Created on: 2023-04-15T16:05:58-07:00            #
-# Last Modified: 2023-04-15T23:08:58.642309+00:00  #
+# Created on: 2023-04-16T09:11:41-07:00            #
+# Last Modified: 2023-04-16T16:14:52.917043+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
-from typing import Any, Iterable, Iterator, Sequence
+from typing import Iterable, Iterator
 
 from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
 from snippets.indexed_string.state_parser.parse_exception import ParseException
+from snippets.indexed_string.state_parser.parse_indexed_string import (
+    parse_indexed_string,
+)
 from snippets.indexed_string.state_parser.state_parser_protocols import (
-    IndexedStringParserProtocol,
     ParseManagerProtocol,
     ParseResultProtocol,
 )
@@ -23,17 +25,32 @@ logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
 
-# def parse_indexed_strings(
-#     indexed_strings: Iterable[IndexedStringProtocol],
-#     manager: ParseManagerProtocol,
-# ) -> Iterable[ParseResultProtocol]:
-#     pass
-
-
 def parse_indexed_strings(
     indexed_strings: Iterable[IndexedStringProtocol],
     manager: ParseManagerProtocol,
 ) -> Iterator[ParseResultProtocol]:
+    """
+    Parse an iterable of indexed strings.
+
+    Parses an iterable of indexed strings, eg. (idx=linenumber, txt=line) of a text file.
+    Uses `state` to predict the possible matches for the next indexed string.
+    The beginning state is `start`, and each successful parse will return a new state.
+    This new state will be used to get a list of possible matches from the `ParseManager`,
+    which will be checked in sequence until a match is found. If no valid matches are
+    found, a `ParseException` will be raised, signaling a failure of the parse job.
+    In other words, a match must be found for each line.
+
+    Args:
+        indexed_strings: An iterable of indexed strings to be parsed.
+        manager: The container for expected parsers, and a context variable that can be used
+            to store arbitrary info to aid parsing.
+
+    Raises:
+        error: Signals a failure of the overall parse job.
+
+    Yields:
+        The parse result, which contains the new state, and any parsed data.
+    """
     current_state = "start"
     for indexed_string in indexed_strings:
         try:
@@ -42,29 +59,8 @@ def parse_indexed_strings(
                 parsers=manager.expected_parsers(current_state),
                 ctx=manager.ctx,
             )
-            # manager.handle_result(parse_result=parse_result)
             current_state = parse_result.current_state
             yield parse_result
         except ParseException as error:
             logger.error("%s", error)
             raise error
-
-
-def parse_indexed_string(
-    indexed_string: IndexedStringProtocol,
-    parsers: Sequence[IndexedStringParserProtocol],
-    ctx: dict[str, Any],
-) -> ParseResultProtocol:
-    for parser in parsers:
-        try:
-            parse_result = parser.parse(indexed_string=indexed_string, ctx=ctx)
-            logger.info("\n\tPARSED %r->%r", parser.__class__.__name__, indexed_string)
-            return parse_result
-        except ParseException as error:
-            logger.info(
-                "\n\tFAILED %r->%r\n\t%r",
-                parser.__class__.__name__,
-                indexed_string,
-                error,
-            )
-    raise ParseException(f"No parser found for {indexed_string!r}\nTried {parsers!r}")

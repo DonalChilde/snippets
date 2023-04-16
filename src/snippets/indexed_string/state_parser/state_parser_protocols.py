@@ -5,14 +5,15 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:13-07:00            #
-# Last Modified: 2023-04-15T23:08:58.643079+00:00  #
+# Last Modified: 2023-04-16T16:14:52.915159+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 """
-Defines the interface for a state based text parser.
+Defines the interface for a state based indexed string parser.
 
 When parsing semi structured text, parsing a section often depends on
-knowing what the previous section was.
+knowing what the previous section was. This parser allows the selection of possible
+parsers based on the results of the previous successfully parsed string.
 """
 from typing import Any, Protocol, Sequence
 
@@ -20,7 +21,7 @@ from snippets.indexed_string.indexed_string_protocol import IndexedStringProtoco
 from snippets.indexed_string.state_parser.parse_exception import ParseException
 
 
-class ParsedIndexedString(Protocol):
+class ParsedIndexedStringProtocol(Protocol):
     """Contains data parsed from an `IndexedStringProtocol`.
 
     This class is usually subclassed to represent the source string, and the
@@ -43,7 +44,7 @@ class ParseResultProtocol(Protocol):
     """
 
     current_state: str
-    parsed_data: ParsedIndexedString
+    parsed_data: ParsedIndexedStringProtocol
 
 
 class IndexedStringParserProtocol(Protocol):
@@ -60,7 +61,7 @@ class IndexedStringParserProtocol(Protocol):
         parse job.
 
         Args:
-            indexed_string: The IndexedString to be parsed.
+            indexed_string: The indexed string to be parsed.
             ctx: A dictionary that holds any additional information needed for parsing.
 
         Raises:
@@ -73,36 +74,67 @@ class IndexedStringParserProtocol(Protocol):
 
 
 class ResultHandlerProtocol(Protocol):
-    """Do something with the result of a successful parse."""
+    """Do something with a parse result."""
 
     def handle_result(self, parse_result: ParseResultProtocol, **kwargs):
-        ...
+        """
+        Handle the result of a successful parse.
+
+        Args:
+            parse_result: The result of a successful parse.
+        """
+        raise NotImplementedError
 
 
-class ExpectedParsersProtocol(Protocol):
-    """Get a list of parsers expected to match the next string.
+# class ExpectedParsersProtocol(Protocol):
+#     """Get a list of parsers expected to match the next string.
 
-    The state string is usually obtained during the previous parse, where a successful
-    parse determines the new current state of the parse job.
-    """
+#     The state string is usually updated during the previous parse, where a successful
+#     parse determines the new current state of the parse job.
+#     """
 
-    def expected_parsers(
-        self, current_state: str, **kwargs
-    ) -> Sequence[IndexedStringParserProtocol]:
-        ...
+#     def expected_parsers(
+#         self, current_state: str, **kwargs
+#     ) -> Sequence[IndexedStringParserProtocol]:
+#         """
+#         Get a seqence of parsers expected to match the next indexed string parsed.
+
+#         Args:
+#             current_state: The current state of a parse job.
+
+#         Returns:
+#             The sequence of parsers.
+#         """
+#         raise NotImplementedError
 
 
 class ParseManagerProtocol(Protocol):
-    """Holds references to the ResultHandler, ExpectedParsers, and a context dict."""
+    """
+    Contains the information needed to parse indexed strings.
+
+    Provides parsers expected to match the next indexed string based on the `state` from
+    the previous successful parse. The `start` state typically represents the state
+    of the job before any parsing takes place.
+
+    Attributes:
+        ctx: A store for arbitrary information needed to parse. Can be used to pass information
+            between parsers.
+    """
 
     ctx: dict[str, Any]
-    result_handler: ResultHandlerProtocol
-    parse_scheme: ExpectedParsersProtocol
 
     def expected_parsers(
         self, state: str, **kwargs
     ) -> Sequence[IndexedStringParserProtocol]:
-        return self.expected_parsers(state=state)
+        """
+        Get a sequence of parsers expected to match the next indexed string.
 
-    def handle_result(self, parse_result: ParseResultProtocol, **kwargs):
-        return self.result_handler.handle_result(parse_result=parse_result)
+        The parsers returned are based on the current state of a parse job.
+
+        Args:
+            state: The current state of a parse job.
+
+        Returns:
+            A sequence of parsers expected to match the next indexed string.
+        """
+        raise NotImplementedError
