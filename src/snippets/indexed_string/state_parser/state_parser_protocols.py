@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:13-07:00            #
-# Last Modified: 2023-04-16T16:14:52.915159+00:00  #
+# Last Modified: 2023-04-16T19:28:18.006581+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 """
@@ -44,7 +44,7 @@ class ParseResultProtocol(Protocol):
     """
 
     current_state: str
-    parsed_data: ParsedIndexedStringProtocol
+    parsed_data: Any
 
 
 class IndexedStringParserProtocol(Protocol):

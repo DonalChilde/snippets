@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-16T08:06:21-07:00            #
-# Last Modified: 2023-04-16T16:14:52.916550+00:00  #
+# Last Modified: 2023-04-16T19:28:18.006039+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 
@@ -29,7 +29,7 @@ class MultipleResultHandler:
         Args:
             result_handlers: The result handlers.
         """
-        self.handlers = result_handlers
+        self.handlers = list(result_handlers)
 
     def handle_result(self, parse_result: ParseResultProtocol, **kwargs):
         """Passes the parse result to multiple handlers in sequence."""
