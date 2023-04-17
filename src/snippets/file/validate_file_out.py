@@ -5,14 +5,14 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-10-29T09:11:28-07:00            #
-# Last Modified: 2023-03-17T20:30:10.842010+00:00  #
+# Last Modified: 2023-04-17T14:36:01.591231+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from pathlib import Path
 
 
 def validate_file_out(
-    file_path: Path, overwrite: bool, *, ensure_parent: bool = True
+    file_path: Path, *, overwrite: bool = False, ensure_parent: bool = True
 ) -> bool:
     """Ensure that a path is suitable for file output.
 
