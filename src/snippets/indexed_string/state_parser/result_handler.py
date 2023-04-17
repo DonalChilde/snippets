@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-16T08:06:21-07:00            #
-# Last Modified: 2023-04-16T19:28:18.006039+00:00  #
+# Last Modified: 2023-04-17T14:38:11.478334+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 
@@ -37,21 +37,55 @@ class MultipleResultHandler:
             handler.handle_result(parse_result=parse_result, **kwargs)
 
 
-class SaveToTextFileHandler:
-    def __init__(self, writer: TextIOWrapper, record_separator: str = "") -> None:
+class ParseResultSaveToTextFileHandler:
+    def __init__(
+        self, writer: TextIOWrapper, record_separator: str = "", as_repr: bool = False
+    ) -> None:
         """
         Save the parse result to an opened text file.
 
         Args:
             writer: An opened text file.
-            record_separator: A string written between records, eg. `\n`
+            record_separator: A string written between records, eg. `\n`. Defaults to to ''.
+            as_repr: Output as repr(value)
         """
         self.writer = writer
         self.record_separator = record_separator
+        self.as_repr = as_repr
 
     def handle_result(self, parse_result: ParseResultProtocol, **kwargs):
         """Save the parse result to a text file as str(parse_result)."""
         _ = kwargs
-        self.writer.write(str(parse_result))
+        if self.as_repr:
+            self.writer.write(f"{parse_result!r}")
+        else:
+            self.writer.write(f"{parse_result}")
+        if self.record_separator:
+            self.writer.write(self.record_separator)
+
+
+class ParsedDataSaveToTextFileHandler:
+    def __init__(
+        self, writer: TextIOWrapper, record_separator: str = "", as_repr: bool = False
+    ) -> None:
+        """
+        Save the parse_result.parsed_data to an opened text file.
+
+        Args:
+            writer: An opened text file.
+            record_separator: A string written between records, eg. `\n`. Defaults to to ''.
+            as_repr: Output as repr(value)
+        """
+        self.writer = writer
+        self.record_separator = record_separator
+        self.as_repr = as_repr
+
+    def handle_result(self, parse_result: ParseResultProtocol, **kwargs):
+        """Save the parse_result.parsed_data to a text file."""
+        _ = kwargs
+        if self.as_repr:
+            self.writer.write(f"{parse_result.parsed_data!r}")
+        else:
+            self.writer.write(f"{parse_result.parsed_data}")
         if self.record_separator:
             self.writer.write(self.record_separator)
