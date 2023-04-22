@@ -5,14 +5,18 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-16T09:11:27-07:00            #
-# Last Modified: 2023-04-16T16:14:52.916266+00:00  #
+# Last Modified: 2023-04-22T15:47:19.552663+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
 from typing import Any, Sequence
 
 from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
-from snippets.indexed_string.state_parser.parse_exception import ParseException
+from snippets.indexed_string.state_parser.parse_exception import (
+    ParseAllFail,
+    ParseException,
+    ParseFail,
+)
 from snippets.indexed_string.state_parser.state_parser_protocols import (
     IndexedStringParserProtocol,
     ParseResultProtocol,
@@ -40,7 +44,8 @@ def parse_indexed_string(
         ctx: A store for arbitrary information needed to parse.
 
     Raises:
-        ParseException: Signals the failure of a parser, or the failure of the parse
+        ParseFail: Signals the failure of a parser.
+        ParseAllFail: Signals the failure of all parsers or the failure of the parse
             job as a whole.
 
     Returns:
@@ -49,13 +54,16 @@ def parse_indexed_string(
     for parser in parsers:
         try:
             parse_result = parser.parse(indexed_string=indexed_string, ctx=ctx)
-            logger.info("\n\tPARSED %r->%r", parser.__class__.__name__, indexed_string)
             return parse_result
-        except ParseException as error:
+        except ParseFail as error:
             logger.info(
                 "\n\tFAILED %r->%r\n\t%r",
-                parser.__class__.__name__,
-                indexed_string,
+                error.parser.__class__.__name__,
+                error.indexed_string,
                 error,
             )
-    raise ParseException(f"No parser found for {indexed_string!r}\nTried {parsers!r}")
+    raise ParseAllFail(
+        f"No parser found for {indexed_string!r}\nTried {parsers!r}",
+        parsers=parsers,
+        indexed_string=indexed_string,
+    )
