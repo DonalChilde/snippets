@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:31-07:00            #
-# Last Modified: 2023-04-22T15:47:19.552023+00:00  #
+# Last Modified: 2023-04-22T15:59:58.363420+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from typing import Sequence
@@ -20,7 +20,7 @@ class ParseException(Exception):
     """Use this exception to signal a failed parse."""
 
 
-class ParseFail(ParseException):
+class SingleParserFail(ParseException):
     """Use this exception to signal single parser failed."""
 
     def __init__(
@@ -35,7 +35,14 @@ class ParseFail(ParseException):
         self.indexed_string = indexed_string
 
 
-class ParseAllFail(ParseException):
+class ParseJobFail(ParseException):
+    """Use this exception to signal whole parse job failed."""
+
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+
+
+class ParseAllFail(ParseJobFail):
     """Use this exception to signal all parsers failed, job failed."""
 
     def __init__(

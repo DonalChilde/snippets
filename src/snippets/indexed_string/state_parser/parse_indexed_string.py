@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-16T09:11:27-07:00            #
-# Last Modified: 2023-04-22T15:47:19.552663+00:00  #
+# Last Modified: 2023-04-22T15:59:58.362776+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
@@ -15,7 +15,8 @@ from snippets.indexed_string.indexed_string_protocol import IndexedStringProtoco
 from snippets.indexed_string.state_parser.parse_exception import (
     ParseAllFail,
     ParseException,
-    ParseFail,
+    ParseJobFail,
+    SingleParserFail,
 )
 from snippets.indexed_string.state_parser.state_parser_protocols import (
     IndexedStringParserProtocol,
@@ -44,9 +45,9 @@ def parse_indexed_string(
         ctx: A store for arbitrary information needed to parse.
 
     Raises:
-        ParseFail: Signals the failure of a parser.
-        ParseAllFail: Signals the failure of all parsers or the failure of the parse
-            job as a whole.
+        SingleParserFail: Signals the failure of a parser.
+        ParseJobFail: Signals the failure of the parse job as a whole.
+        ParseAllFail: Signals the failure of all parsers.
 
     Returns:
         The result of a successful parse.
@@ -55,13 +56,16 @@ def parse_indexed_string(
         try:
             parse_result = parser.parse(indexed_string=indexed_string, ctx=ctx)
             return parse_result
-        except ParseFail as error:
+        except SingleParserFail as error:
             logger.info(
                 "\n\tFAILED %r->%r\n\t%r",
                 error.parser.__class__.__name__,
                 error.indexed_string,
                 error,
             )
+        except ParseJobFail as error:
+            logger.info("Parse Job failed %s", error)
+            raise error
     raise ParseAllFail(
         f"No parser found for {indexed_string!r}\nTried {parsers!r}",
         parsers=parsers,
