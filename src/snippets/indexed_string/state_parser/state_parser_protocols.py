@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:13-07:00            #
-# Last Modified: 2023-04-22T15:59:58.364514+00:00  #
+# Last Modified: 2023-04-23T14:43:08.802395+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 """
@@ -18,7 +18,6 @@ parsers based on the results of the previous successfully parsed string.
 from typing import Any, Protocol, Sequence
 
 from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
-from snippets.indexed_string.state_parser.parse_exception import ParseException
 
 
 class ParsedIndexedStringProtocol(Protocol):
@@ -71,7 +70,7 @@ class IndexedStringParserProtocol(Protocol):
         Returns:
             The `ParseResult` of a successful parse.
         """
-        raise ParseException
+        raise NotImplementedError
 
 
 class ResultHandlerProtocol(Protocol):
