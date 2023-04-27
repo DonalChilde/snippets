@@ -5,11 +5,11 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-26T11:14:53-07:00            #
-# Last Modified: 2023-04-26T18:16:35.378960+00:00  #
+# Last Modified: 2023-04-27T03:44:29.189756+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 class Message:
-    def __init__(self, msg: str, extra: dict) -> None:
+    def __init__(self, msg: str, extra: dict | None = None) -> None:
         self.msg = msg
         self.extra = extra
 
