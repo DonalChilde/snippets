@@ -5,13 +5,19 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-26T11:14:53-07:00            #
-# Last Modified: 2023-04-27T03:44:29.189756+00:00  #
+# Last Modified: 2023-05-04T13:50:18.032284+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
-class Message:
+from snippets.messages.messenger_protocol import MessageProtocol
+
+
+class Message(MessageProtocol):
     def __init__(self, msg: str, extra: dict | None = None) -> None:
         self.msg = msg
         self.extra = extra
+
+    def produce_message(self) -> str:
+        return str(self)
 
     def __str__(self) -> str:
         return self.msg
