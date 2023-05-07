@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-16T09:11:27-07:00            #
-# Last Modified: 2023-04-22T15:59:58.362776+00:00  #
+# Last Modified: 2023-05-07T17:15:47.092834+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
@@ -14,7 +14,6 @@ from typing import Any, Sequence
 from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
 from snippets.indexed_string.state_parser.parse_exception import (
     ParseAllFail,
-    ParseException,
     ParseJobFail,
     SingleParserFail,
 )
