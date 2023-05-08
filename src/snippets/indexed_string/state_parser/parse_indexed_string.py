@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-16T09:11:27-07:00            #
-# Last Modified: 2023-05-07T17:15:47.092834+00:00  #
+# Last Modified: 2023-05-08T23:54:05.946941+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
@@ -29,7 +29,7 @@ logger.addHandler(logging.NullHandler())
 def parse_indexed_string(
     indexed_string: IndexedStringProtocol,
     parsers: Sequence[IndexedStringParserProtocol],
-    ctx: dict[str, Any],
+    ctx: dict[str, Any] | None,
 ) -> ParseResultProtocol:
     """
     Parse an indexed string based on a list of possible parsers.

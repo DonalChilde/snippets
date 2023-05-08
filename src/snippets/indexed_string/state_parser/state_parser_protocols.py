@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:13-07:00            #
-# Last Modified: 2023-05-07T17:15:47.093886+00:00  #
+# Last Modified: 2023-05-08T23:54:05.948198+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 """
@@ -15,7 +15,7 @@ When parsing semi structured text, parsing a section often depends on
 knowing what the previous section was. This parser allows the selection of possible
 parsers based on the results of the previous successfully parsed string.
 """
-from typing import Any, Generic, Protocol, Sequence, TypeVar
+from typing import Any, Protocol, Sequence, TypeVar
 
 from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
 
@@ -52,7 +52,10 @@ class IndexedStringParserProtocol(Protocol):
     """Parse an IndexedString."""
 
     def parse(
-        self, indexed_string: IndexedStringProtocol, ctx: dict[str, Any], **kwargs
+        self,
+        indexed_string: IndexedStringProtocol,
+        ctx: dict[str, Any] | None,
+        **kwargs,
     ) -> ParseResultProtocol:
         """
         A parse function that matches an IndexedString.
@@ -108,29 +111,7 @@ class ResultHandlerProtocol(Protocol[T]):
         return self.data
 
 
-# class ExpectedParsersProtocol(Protocol):
-#     """Get a list of parsers expected to match the next string.
-
-#     The state string is usually updated during the previous parse, where a successful
-#     parse determines the new current state of the parse job.
-#     """
-
-#     def expected_parsers(
-#         self, current_state: str, **kwargs
-#     ) -> Sequence[IndexedStringParserProtocol]:
-#         """
-#         Get a seqence of parsers expected to match the next indexed string parsed.
-
-#         Args:
-#             current_state: The current state of a parse job.
-
-#         Returns:
-#             The sequence of parsers.
-#         """
-#         raise NotImplementedError
-
-
-class ParseManagerProtocol(Protocol):
+class ParseManagerProtocol(Protocol[T]):
     """
     Contains the information needed to parse indexed strings.
 
@@ -143,7 +124,7 @@ class ParseManagerProtocol(Protocol):
             between parsers.
     """
 
-    ctx: dict[str, Any]
+    ctx: dict[str, Any] | None
 
     def expected_parsers(
         self, state: str, **kwargs
@@ -161,5 +142,5 @@ class ParseManagerProtocol(Protocol):
         """
         raise NotImplementedError
 
-    def result_handler(self) -> ResultHandlerProtocol:
+    def result_handler(self) -> ResultHandlerProtocol[T]:
         ...
