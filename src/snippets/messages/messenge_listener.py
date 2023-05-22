@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-26T11:15:26-07:00            #
-# Last Modified: 2023-05-22T17:17:39.369212+00:00  #
+# Last Modified: 2023-05-22T17:29:51.955566+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from io import TextIOWrapper
@@ -40,9 +40,15 @@ class MessengeListener:
 
 class PrintMessengeListener(MessengeListener):
     def __init__(
-        self, end: str = "\n", file: TextIOWrapper | None = None, flush: bool = False
+        self,
+        *,
+        sieve: Callable[[Message], bool] | None = None,
+        formatter: Callable[[Message], str] | None = None,
+        end: str = "\n",
+        file: TextIOWrapper | None = None,
+        flush: bool = False,
     ) -> None:
-        super().__init__()
+        super().__init__(sieve=sieve, formatter=formatter)
         self.end = end
         self.file = file
         self.flush = flush
