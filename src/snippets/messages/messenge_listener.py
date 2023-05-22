@@ -5,24 +5,37 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-26T11:15:26-07:00            #
-# Last Modified: 2023-05-22T14:38:53.210034+00:00  #
+# Last Modified: 2023-05-22T17:02:51.743657+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from io import TextIOWrapper
+from typing import Callable
 
-from .messenger_protocol import MessageProtocol, MessengeListenerProtocol
+from .message import Message
 
 
-class MessengeListener(MessengeListenerProtocol):
-    def receive_message(self, msg: MessageProtocol):
+class MessengeListener:
+    def __init__(
+        self,
+        *,
+        sieve: Callable[[Message], bool] | None = None,
+        formatter: Callable[[Message], str] | None = None,
+    ) -> None:
+        self.sieve = sieve
+        self.formatter = formatter
+
+    def receive_message(self, msg: Message):
         raise NotImplementedError
 
-    def format_message(self, msg: MessageProtocol) -> str:
-        return msg.produce_message()
+    def format_message(self, msg: Message) -> str:
+        if self.formatter is None:
+            return msg.produce_message()
+        return self.formatter(msg)
 
-    def filter_message(self, msg: MessageProtocol) -> bool:
-        _ = msg
-        return True
+    def filter_message(self, msg: Message) -> bool:
+        if self.sieve is None:
+            return True
+        return self.sieve(msg)
 
 
 class PrintMessengeListener(MessengeListener):
@@ -34,7 +47,7 @@ class PrintMessengeListener(MessengeListener):
         self.file = file
         self.flush = flush
 
-    def receive_message(self, msg: MessageProtocol):
+    def receive_message(self, msg: Message):
         if self.filter_message(msg=msg):
             msg_txt = self.format_message(msg)
             print(
