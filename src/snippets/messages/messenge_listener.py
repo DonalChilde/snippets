@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-26T11:15:26-07:00            #
-# Last Modified: 2023-05-22T17:02:51.743657+00:00  #
+# Last Modified: 2023-05-22T17:17:39.369212+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from io import TextIOWrapper
@@ -56,3 +56,12 @@ class PrintMessengeListener(MessengeListener):
                 file=self.file,
                 flush=self.flush,
             )
+
+
+def category_sieve(txt: str) -> Callable[[Message], bool]:
+    def sieve(msg: Message) -> bool:
+        if txt in msg.category:
+            return True
+        return False
+
+    return sieve
