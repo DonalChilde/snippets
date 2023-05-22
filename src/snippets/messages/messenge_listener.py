@@ -5,13 +5,13 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-26T11:15:26-07:00            #
-# Last Modified: 2023-05-22T17:29:51.955566+00:00  #
+# Last Modified: 2023-05-22T17:42:40.603572+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from io import TextIOWrapper
 from typing import Callable
 
-from .message import Message
+from . import Message
 
 
 class MessengeListener:
