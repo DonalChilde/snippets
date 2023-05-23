@@ -5,11 +5,11 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-26T11:15:26-07:00            #
-# Last Modified: 2023-05-22T17:42:40.603572+00:00  #
+# Last Modified: 2023-05-23T03:05:20.347117+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from io import TextIOWrapper
-from typing import Callable
+from typing import Callable, Sequence
 
 from . import Message
 
@@ -68,6 +68,18 @@ def category_sieve(txt: str) -> Callable[[Message], bool]:
     def sieve(msg: Message) -> bool:
         if txt in msg.category:
             return True
+        return False
+
+    return sieve
+
+
+def match_any_sieve(
+    sieves: Sequence[Callable[[Message], bool]]
+) -> Callable[[Message], bool]:
+    def sieve(msg: Message) -> bool:
+        for x in sieves:
+            if x(msg):
+                return True
         return False
 
     return sieve
