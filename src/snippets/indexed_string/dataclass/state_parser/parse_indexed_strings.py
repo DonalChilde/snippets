@@ -1,26 +1,25 @@
 ####################################################
 #                                                  #
-# src/snippets/indexed_string/state_parser/parse_indexed_strings.py
+# src/snippets/indexed_string/dataclass/state_parser/parse_indexed_strings.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-04-16T09:11:41-07:00            #
-# Last Modified: 2023-04-22T15:59:58.363966+00:00  #
+# Last Modified: 2023-06-26T22:54:24.732129+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 import logging
 from typing import Iterable, Iterator
 
-from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
-from snippets.indexed_string.state_parser.parse_exception import (
-    ParseAllFail,
+from snippets.indexed_string.dataclass.indexed_string import IndexedStringProtocol
+from snippets.indexed_string.dataclass.state_parser.parse_exception import (
     ParseException,
     ParseJobFail,
 )
-from snippets.indexed_string.state_parser.parse_indexed_string import (
+from snippets.indexed_string.dataclass.state_parser.parse_indexed_string import (
     parse_indexed_string,
 )
-from snippets.indexed_string.state_parser.state_parser_protocols import (
+from snippets.indexed_string.dataclass.state_parser.state_parser_protocols import (
     ParseManagerProtocol,
     ParseResultProtocol,
 )

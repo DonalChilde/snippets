@@ -1,16 +1,16 @@
 ####################################################
 #                                                  #
-#      src/snippets/indexed_string/filters.py
+# src/snippets/indexed_string/dataclass/filters.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2022-11-10T15:27:45-07:00            #
-# Last Modified: 2023-04-16T19:28:18.005306+00:00  #
+# Last Modified: 2023-06-26T22:54:24.729664+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from typing import Callable, Sequence
 
-from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
+from snippets.indexed_string.dataclass.indexed_string import IndexedStringProtocol
 
 
 class SkipTillFirstMatch:

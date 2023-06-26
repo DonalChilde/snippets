@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-06-26T14:26:13-07:00            #
-# Last Modified: 2023-06-26T21:30:47.488092+00:00  #
+# Last Modified: 2023-06-26T22:54:24.731566+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from dataclasses import dataclass
@@ -33,3 +33,14 @@ class IndexedStringProtocol(Protocol):
 class IndexedString(TypedDict):
     idx: int
     txt: str
+
+
+def foo(value: IndexedStringProtocol):
+    return True
+
+
+def bar():
+    istd = IndexedString(idx=1, txt="loreipsum")
+    isdc = IndexedStringDC(idx=1, txt="foobar")
+    one = foo(istd)
+    two = foo(isdc)

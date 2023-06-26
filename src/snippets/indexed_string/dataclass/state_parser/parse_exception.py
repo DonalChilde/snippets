@@ -1,17 +1,17 @@
 ####################################################
 #                                                  #
-#  src/snippets/indexed_string/state_parser/parse_exception.py
+#  src/snippets/indexed_string/dataclass/state_parser/parse_exception.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:31-07:00            #
-# Last Modified: 2023-04-22T15:59:58.363420+00:00  #
+# Last Modified: 2023-06-26T22:54:24.732089+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from typing import Sequence
 
-from snippets.indexed_string.indexed_string_protocol import IndexedStringProtocol
-from snippets.indexed_string.state_parser.state_parser_protocols import (
+from snippets.indexed_string.dataclass.indexed_string import IndexedStringProtocol
+from snippets.indexed_string.dataclass.state_parser.state_parser_protocols import (
     IndexedStringParserProtocol,
 )
 
