@@ -1,9 +1,19 @@
+####################################################
+#                                                  #
+#  src/snippets/indexed_string/typedict/state_parser/result_handlers.py
+#                                                  #
+####################################################
+# Created by: Chad Lowe                            #
+# Created on: 2023-06-26T15:59:06-07:00            #
+# Last Modified: 2023-06-26T23:11:51.058729+00:00  #
+# Source: https://github.com/DonalChilde/snippets  #
+####################################################
 import json
 from pathlib import Path
 from typing import TypeVar
 
 from snippets.file.validate_file_out import validate_file_out
-from snippets.indexed_string.state_parser_3.state_parser_protocols import (
+from snippets.indexed_string.typedict.state_parser.state_parser_protocols import (
     ParseResult,
     ResultHandlerData,
 )

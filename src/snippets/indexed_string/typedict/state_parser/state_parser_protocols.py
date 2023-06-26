@@ -1,11 +1,11 @@
 ####################################################
 #                                                  #
-# src/snippets/indexed_string/state_parser_3/state_parser_protocols.py
+# src/snippets/indexed_string/typedict/state_parser/state_parser_protocols.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-02-05T05:59:13-07:00            #
-# Last Modified: 2023-06-25T16:27:56.956006+00:00  #
+# Last Modified: 2023-06-26T23:11:51.056598+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 """
@@ -17,7 +17,7 @@ parsers based on the results of the previous successfully parsed string.
 """
 from typing import Any, Protocol, Sequence, TypedDict, TypeVar
 
-from snippets.indexed_string.indexed_string_td import IndexedString
+from snippets.indexed_string.typedict.indexed_string import IndexedString
 
 T = TypeVar("T")
 

@@ -1,22 +1,22 @@
 ####################################################
 #                                                  #
-# src/snippets/indexed_string/state_parser_3/parse_job.py
+# src/snippets/indexed_string/typedict/state_parser/parse_job.py
 #                                                  #
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-05-07T11:30:50-07:00            #
-# Last Modified: 2023-06-25T16:27:56.954383+00:00  #
+# Last Modified: 2023-06-26T23:11:51.057861+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 from typing import Any, Iterable, TypeVar
 
-from snippets.indexed_string.indexed_string_td import IndexedString
-from snippets.indexed_string.state_parser_3.parse_indexed_strings import (
+from snippets.indexed_string.typedict.indexed_string import IndexedString
+from snippets.indexed_string.typedict.state_parser.parse_indexed_strings import (
     parse_indexed_strings,
 )
-from snippets.indexed_string.state_parser_3.state_parser_protocols import (
-    ParseResult,
+from snippets.indexed_string.typedict.state_parser.state_parser_protocols import (
     ParserLookupProtocol,
+    ResultHandlerData,
     ResultHandlerProtocol,
 )
 
@@ -28,7 +28,7 @@ def parse_job(
     parser_lookup: ParserLookupProtocol,
     result_handler: ResultHandlerProtocol,
     ctx: dict[str, Any] | None = None,
-) -> list[ParseResult] | None:
+) -> ResultHandlerData | None:
     with result_handler:
         for parse_result in parse_indexed_strings(
             indexed_strings=indexed_strings, parser_lookup=parser_lookup, ctx=ctx
