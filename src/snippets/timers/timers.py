@@ -5,7 +5,7 @@
 ####################################################
 # Created by: Chad Lowe                            #
 # Created on: 2023-06-19T07:38:54-07:00            #
-# Last Modified: 2023-06-21T02:39:31.473449+00:00  #
+# Last Modified: 2023-06-30T10:25:18.339131+00:00  #
 # Source: https://github.com/DonalChilde/snippets  #
 ####################################################
 
@@ -68,7 +68,11 @@ def function_timer(
     return decorator
 
 
-def timer_ns(callback: Callable[[int, int, str, tuple[tuple, dict]], None]):
+# Below are timer utilities refactored to have sharable code.
+# TODO update docs
+
+
+def timer_ns(callback: Callable[[int, int, str, tuple[tuple, dict] | None], None]):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -81,6 +85,25 @@ def timer_ns(callback: Callable[[int, int, str, tuple[tuple, dict]], None]):
         return wrapper
 
     return decorator
+
+
+class ContextTimer:
+    def __init__(
+        self,
+        callback: Callable[[int, int, str, tuple[tuple, dict] | None], None],
+        ident: str,
+    ) -> None:
+        self.start = 0
+        self.end = 0
+        self.callback = callback
+        self.ident = ident
+
+    def __enter__(self):
+        self.start = perf_counter_ns()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.end = perf_counter_ns()
+        self.callback(self.start, self.end, self.ident, None)
 
 
 class TimeLogger:
@@ -98,13 +121,13 @@ class TimeLogger:
         self.repr_length = repr_length
 
     def __call__(
-        self, start: int, end: int, func_name: str, func_args: tuple[tuple, dict]
+        self, start: int, end: int, ident: str, func_args: tuple[tuple, dict] | None
     ) -> Any:
         if self.repr_length == -1:
             self.logger.log(
                 self.level,
                 "%s ran in %ss with args: %s",
-                func_name,
+                ident,
                 f"{(end-start)/NANOS_PER_SECOND:9f}",
                 repr(func_args),
             )
@@ -113,7 +136,7 @@ class TimeLogger:
             self.logger.log(
                 self.level,
                 "%s ran in %ss with args: %s",
-                func_name,
+                ident,
                 f"{(end-start)/NANOS_PER_SECOND:9f}",
                 repr(func_args)[: self.repr_length],
             )
@@ -121,6 +144,6 @@ class TimeLogger:
             self.logger.log(
                 self.level,
                 "%s ran in %ss",
-                func_name,
+                ident,
                 f"{(end-start)/NANOS_PER_SECOND:9f}",
             )
